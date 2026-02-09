@@ -13,7 +13,7 @@ const config: Config = {
   },
 
   // If you deploy on Vercel with a custom domain, keep baseUrl as "/"
-  url: 'https://kb-contract.matuteiglesias.link',
+  url: 'https://kb-contracts.matuteiglesias.link',
   baseUrl: '/',
 
   // Useful even if not using GitHub Pages
