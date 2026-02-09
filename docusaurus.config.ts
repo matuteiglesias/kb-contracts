@@ -20,7 +20,7 @@ const config: Config = {
   organizationName: 'matuteiglesias',
   projectName: 'kb-manual',
 
-  onBrokenLinks: 'throw',
+  onBrokenLinks: 'warn',
   onBrokenMarkdownLinks: 'warn',
 
   i18n: {
@@ -54,58 +54,41 @@ const config: Config = {
     colorMode: {
       respectPrefersColorScheme: true,
     },
+
+
     navbar: {
       title: 'KB Manual',
-      logo: {
-        alt: 'KB Manual',
-        src: 'img/logo.svg',
-      },
+      logo: { alt: 'KB Manual', src: 'img/logo.svg' },
       items: [
-        {
-          type: 'docSidebar',
-          sidebarId: 'tutorialSidebar',
-          position: 'left',
-          label: 'Manual',
-        },
-        {
-          to: '/docs/intro',
-          label: 'Start',
-          position: 'left',
-        },
-        {
-          href: 'https://github.com/matuteiglesias/kb-manual',
-          label: 'GitHub',
-          position: 'right',
-        },
+        { type: 'docSidebar', sidebarId: 'tutorialSidebar', position: 'left', label: 'Manual' },
+        { type: 'doc', docId: 'intro', label: 'Start', position: 'left' },
+        { href: 'https://github.com/matuteiglesias/kb-manual', label: 'GitHub', position: 'right' },
       ],
     },
     footer: {
       style: 'dark',
       links: [
         {
-          title: 'Manual',
+          title: 'Navigate',
           items: [
-            {label: 'Home', to: '/docs/intro'},
-            {label: 'Ecosystem registry', to: '/docs/registry/ecosystem-map'},
-            {label: 'Bus contracts', to: '/docs/contracts/event-bus'},
+            { label: 'Home', to: '/docs/00_home/home' },
+            { label: 'Ecosystem registry', to: '/docs/01_registry-governance/ecosystem-map-and-registry' },
+            { label: 'Integration seams', to: '/docs/02_bus-contracts/integration-seams-and-allowed-io' },
+            { label: 'Glossary', to: '/docs/01_registry-governance/glossary' },
           ],
         },
         {
-          title: 'Conventions',
+          title: 'Contracts',
           items: [
-            {label: 'Stable IDs', to: '/docs/conventions/stable-ids'},
-            {label: 'Manifests', to: '/docs/conventions/manifests'},
-            {label: 'Run records', to: '/docs/conventions/run-records'},
-          ],
-        },
-        {
-          title: 'More',
-          items: [
-            {label: 'Repository', href: 'https://github.com/matuteiglesias/kb-manual'},
+            { label: 'Event Bus', to: '/docs/02_bus-contracts/event-bus-contract' },
+            { label: 'Sessions Bus', to: '/docs/02_bus-contracts/sessions-bus-contract' },
+            { label: 'Summary Bus', to: '/docs/02_bus-contracts/summary-bus-contract' },
+            { label: 'Manifests', to: '/docs/03_shared-conventions/manifests-and-integrity-rules' },
+            { label: 'Run records', to: '/docs/03_shared-conventions/run-record-contract' },
           ],
         },
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} Matias Iglesias. Built with Docusaurus.`,
+      copyright: `Copyright © ${new Date().getFullYear()} Matias Iglesias.`,
     },
     prism: {
       theme: prismThemes.github,

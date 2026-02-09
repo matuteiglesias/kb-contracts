@@ -3,6 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
+
+    
     "docusaurus": "docusaurus",
     "start": "docusaurus start",
     "build": "docusaurus build",
@@ -42,6 +44,6 @@
     ]
   },
   "engines": {
-    "node": ">=20.0"
+    "node": "20.x"
   }
 }
