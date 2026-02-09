@@ -1,41 +1,76 @@
-# Website
+# KB Manual
 
-This website is built using [Docusaurus](https://docusaurus.io/), a modern static website generator.
+A decision registry and contract catalog for a multi repo knowledge pipeline ecosystem.
 
-## Installation
+This repo exists to prevent integration drift in systems that combine LLM workflows, knowledge management, and data pipelines. It defines the stable seams between projects: buses, schemas, manifests, run records, publishing contracts, and the rules for how repos are allowed to read and write data.
+
+## What this is
+
+- A decision registry: the “why” behind architectural choices, frozen as ADRs.
+- A contract catalog: authoritative specs for buses and shared conventions.
+- An enforcement reference: the page you consult before wiring two repos together.
+
+## Operating rule
+
+Every pipeline run must be explainable using only this manual:
+
+- allowed inputs
+- required outputs, even if empty
+- schema versions emitted
+- where the run record is written
+- the smoke test command
+
+If you cannot explain a run using only this repo, the system is not integrated yet.
+
+
+## How agents should use this repo
+
+Treat this manual as authoritative.
+
+- Prefer reading contract pages over inspecting code.
+- Never bypass seams by reading upstream raw inputs directly.
+- If a cross family move is needed, do it via an adapter that emits a bus compliant artifact.
+
+## Contents
+
+The site is organized around a small number of stable concepts:
+
+- Registry and governance layer
+  - ecosystem map and registry
+  - ADR index and policy
+  - glossary
+
+- Bus contracts and seams
+  - event bus contract
+  - sessions bus contract
+  - summary bus contract
+  - digest bus contract
+  - chunk bus contract
+  - integration seams and allowed IO
+
+- Shared conventions
+  - stable IDs and naming rules
+  - manifests and integrity rules
+  - run record contract
+  - error taxonomy and stop rules
+
+- Publishing contract and consumers
+  - snapshot publishing contract
+  - consumer interface rules
+
+- Storage boundaries and adapters
+  - adapter policy and version drift strategy
+
+- Minimal runbooks index
+  - links to per repo runbooks without duplicating them
+
+- Contract compliance tests
+  - cross repo tests for contract correctness
+
+## Local development
+
+This repo is a Docusaurus site.
 
 ```bash
-yarn
-```
-
-## Local Development
-
-```bash
-yarn start
-```
-
-This command starts a local development server and opens up a browser window. Most changes are reflected live without having to restart the server.
-
-## Build
-
-```bash
-yarn build
-```
-
-This command generates static content into the `build` directory and can be served using any static contents hosting service.
-
-## Deployment
-
-Using SSH:
-
-```bash
-USE_SSH=true yarn deploy
-```
-
-Not using SSH:
-
-```bash
-GIT_USER=<Your GitHub username> yarn deploy
-```
-
-If you are using GitHub pages for hosting, this command is a convenient way to build the website and push to the `gh-pages` branch.
+npm install
+npm run start
