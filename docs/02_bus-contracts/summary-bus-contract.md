@@ -44,6 +44,9 @@ Out of scope:
 - A service bus output that can be consumed by packagers (Digest Engine) and other downstream processes.
 - A traceable bridge between raw structured objects and human-meaningful synthesis fields.
 
+Consumers do not write summaries. Consumers either read existing summaries by manifest, or create a request to the summarizer service (now/scheduled).
+This prevents teams from “helpfully” generating summaries inside their own repos and breaking determinism guarantees.
+
 ## What this is not
 
 - A replacement for the Event Bus or Sessions Bus
