@@ -182,6 +182,7 @@ Stages
 
 If you keep only one meta principle in view: the ecosystem is a factory of reusable transformations, and the output is not “a report”, it is a set of contracts that let you apply the same transformations to any domain without rebuilding the line.
 
+
 These 12 “powers” are not evenly valuable across my portfolio. They concentrate value in a few leverage junctions, and most of my projects are either (a) producers into the buses, (b) consumers/publishers of buses, or (c) domain adapters that should not be allowed to grow their own bespoke pipelines.
 
 So the move is: map the portfolio into roles relative to the 12 chains, then enforce “who is allowed to do what”.
