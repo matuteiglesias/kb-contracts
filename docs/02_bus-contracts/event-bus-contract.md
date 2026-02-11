@@ -64,78 +64,184 @@ Rules:
 
 ## Canonical event schema
 
-### Required fields
+### Minimum required fields
 
-All events must include the following fields.
+* `schema_version`
+  String. Manifest schema identifier. Example: `event_manifest.v2`
 
-- `schema_version`  
-  String. Example: `event.v1`
+* `bus_schema_version`
+  String. Event record schema identifier. Example: `event.v1`
 
-- `event_id`  
-  String. Stable ID. Deterministic across re-runs when source data is unchanged.
+* `day`
+  String. `YYYY-MM-DD` in the bus timezone.
 
-- `timestamp_ms`  
-  Integer. Epoch milliseconds.
+* `daily_path`
+  String. Relative or absolute path to the daily JSONL file this manifest describes.
 
-- `role`  
-  String enum. Allowed values: `user`, `assistant`, `system`, `tool`
+* `counts`
+  Object with:
 
-- `content`  
-  String. The message text. Empty string is allowed.
+  * `events_total`
+    Integer. Total events in the daily file.
 
-- `source`  
-  Object. Provenance for replay and traceability.
+  * `events_by_kind`
+    Object mapping `event_kind` to integer count.
 
-Minimum required keys inside `source`:
+  * `events_by_domain`
+    Object mapping `domain_family` to integer count.
 
-- `source_system`  
-  String. Example: `chatgpt_export`
+* `integrity`
+  Object with:
 
-- `source_record_id`  
-  String. The upstream identifier if available, else a deterministic surrogate.
+  * `sha256`
+    String. SHA-256 of the daily JSONL file content.
 
-- `source_uri`  
-  String. Path or identifier of the raw source file or dataset.
+  * `bytes`
+    Integer. File size in bytes.
+
+  * `lines`
+    Integer. Number of JSONL lines.
+
+* `kind_registry`
+  Object that fixes the allowed taxonomy for this file (acts as a compatibility fence):
+
+  * `allowed_kinds`
+    Array of strings (see list below).
+
+  * `allowed_subkinds`
+    Object mapping each kind to an array of allowed subkinds.
+    Must include `"other"` as an allowed subkind for every kind.
 
 ### Optional fields
 
-Optional fields may appear. Consumers must ignore unknown optional fields.
+* `producer`
+  Object describing the generator:
 
-Common examples:
+  * `repo` string
+  * `version` string
+  * `git_commit` string (short or full hash)
+  * `host` string (optional)
+  * `run_id` string (optional)
 
-- `conversation_id`  
-  String.
+* `generated_at`
+  Timestamp string (ISO 8601).
 
-- `title`  
-  String.
+* `warnings`
+  Array of strings. Non-fatal issues detected at generation time.
 
-- `language`  
-  String.
+* `notes`
+  Freeform string for operator notes.
 
-- `tokens`  
-  Object with token counts and model details, if computed.
+### Allowed `event_kind` and `event_subkind` (v1)
 
-- `enrichment`  
-  Object. Must be clearly marked as derived output if present.
+This is the recommended default taxonomy for `event.v1`. It is intentionally small and stable.
 
-### Example event object
+* `chat_turn`
+  Subkinds:
+  - `user_message`
+  - `assistant_message`
+  - `tool_call`
+  - `tool_result`
+  - `system_note`
+  - `other`
 
-```json
-{
-  "schema_version": "event.v1",
-  "event_id": "evt_2f6d2c7b9b9d0a4e",
-  "timestamp_ms": 1672614871597,
-  "role": "assistant",
-  "content": "Example content",
-  "source": {
-    "source_system": "chatgpt_export",
-    "source_record_id": "e09cd21a-9637-4b9e-9a68-38ce89d74d6e",
-    "source_uri": "raw/chatgpt/conversations.json"
-  },
-  "conversation_id": "4db5e2c6-07ff-4822-8286-c650a852f03b",
-  "title": "Keyboard Shortcuts for Nano Text Editor"
-}
-```
+* `outreach_action`
+  Subkinds:
+  - `planned`
+  - `sent`
+  - `reply_received`
+  - `followup_due`
+  - `other`
+
+* `external_observation`
+  Subkinds:
+  - `norm_published`
+  - `parliament_update`
+  - `tweet_posted`
+  - `job_posted`
+  - `opportunity_posted`
+  - `price_tick`
+  - `other`
+
+* `external_update`
+  Subkinds:
+  - `object_changed`
+  - `deadline_changed`
+  - `status_changed`
+  - `other`
+
+* `external_deadline`
+  Subkinds:
+  - `deadline_upcoming`
+  - `deadline_missed`
+  - `other`
+
+* `workflow_triggered`
+  Subkinds:
+  - `schedule_trigger`
+  - `manual_trigger`
+  - `dependency_trigger`
+  - `other`
+
+* `workflow_completed`
+  Subkinds:
+  - `success`
+  - `partial`
+  - `other`
+
+* `workflow_failed`
+  Subkinds:
+  - `exception`
+  - `validation_failed`
+  - `rate_limited`
+  - `auth_failed`
+  - `other`
+
+* `health_signal`
+  Subkinds:
+  - `heartbeat_ok`
+  - `lag_detected`
+  - `queue_backlog`
+  - `other`
+
+* `decision_record`
+  Subkinds:
+  - `policy_decision`
+  - `architecture_decision`
+  - `priority_decision`
+  - `other`
+
+* `work_session_logged`
+  Subkinds:
+  - `focus_block`
+  - `meeting`
+  - `review`
+  - `other`
+
+### Boundary rule: event_bus vs chunk/session/summary
+
+The event bus is an append-only log of observations, actions, and triggers. Event payloads must be thin and primarily carry pointers:
+- If the content is substantial text, store it in `chunk_bus` and reference it from the event.
+- If it is a time-boxed human work unit, store it in `session_bus` and reference it from the event.
+- If it is interpreted meaning, classification, or synthesis, store it in `summary_bus` and reference it from the event.
+
+This prevents the event log from becoming a document store or a meaning landfill.
+
+### Producer permissions (public, non-project-specific)
+
+To prevent bus drift, producers should be constrained by role:
+
+- **Signal/ingest producers** may emit: `chat_turn`, `external_observation`, `external_update`, `external_deadline`.
+- **Workflow/orchestration producers** may emit: `workflow_triggered`, `workflow_completed`, `workflow_failed`, `health_signal`.
+  They should emit detailed execution traces to `run_records` (not the event bus), using the event bus only for routing and alerting signals.
+- **Human-work producers** may emit: `work_session_logged`, `decision_record`, and may reference linked `session_bus` items.
+- **Transformers and publishers** should generally not invent new events as “meaning outputs”. Their outputs belong in `summary_bus`, `digest_bus`, or `snapshot_bus`, linked back to the upstream events that justified them.
+
+The only escape valve is `event_subkind="other"` which must be used sparingly and reviewed periodically (if it becomes frequent, promote a new named subkind).
+
+
+
+
 
 ## Stable ID rules
 
@@ -329,3 +435,4 @@ Required response:
 * Fail the run
 * Record error: `MANIFEST_MISMATCH`
 * Recommend rebuild of that day output as remediation
+
