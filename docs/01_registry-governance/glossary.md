@@ -41,13 +41,13 @@ Defined in: Bus contracts: Chunk.
 
 ## Summary
 
-Meaning: A derived representation that compresses one or more source units while preserving provenance links and schema versioning.  
+Meaning: a controlled, policy-defined representation of source content whose purpose is to preserve meaning while reducing entropy; must carry provenance pointers back to canonical sources.
 Not: A digest, a bag, or a free-form note without provenance.  
 Defined in: Bus contracts: Summary.
 
 ## Digest
 
-Meaning: A packaged synthesis artifact produced from summaries and selection rules, intended for human consumption and downstream publishing.  
+Meaning: A packaged multi-summary artifact intended for consumption (human or publisher), typically assembled via selection + ordering + framing rules.  
 Not: The summary bus itself, or raw model output.  
 Defined in: Bus contracts: Digest.
 
@@ -99,3 +99,8 @@ Meaning: A boundary module that converts an external source format into canonica
 Not: A consumer that enriches or republishes existing bus artifacts.  
 Defined in: Source adapters: Inputs, outputs, and validation.
 
+- **corpus**: a governed slice of knowledge with explicit in-scope/out-of-scope boundaries; the unit of “finite dominance”.
+
+- **meaning surface**: the portfolio layer where knowledge becomes operationally usable (routable, joinable, auditable). In this system, that layer is summaries.
+
+- **snapshot**: a published, immutable surface artifact (site page, post, dataset release, docs build) traceable to upstream digests/summaries/manifests.

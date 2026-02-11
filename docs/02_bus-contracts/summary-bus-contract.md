@@ -53,6 +53,30 @@ This prevents teams from “helpfully” generating summaries inside their own r
 - A place to do bagging, publishing, or UI export
 - A place to hide missing coverage by silently dropping inputs
 
+
+
+## Requests are out of bus
+
+Summary Bus is a storage and provenance contract for completed `summary_item` artifacts. **It is not an orchestration interface.**
+
+### Rule
+
+Consumers and producers **must never** write summary items directly into Summary Bus.
+
+### How summaries are requested
+
+Repos request summaries through the **Summary Request seam**, by appending a `summary_request.v1` JSON object to the Summarizer Service queue.
+
+See: **Summary Request Seam** (bus-contracts-and-seams page) for:
+
+- `summary_request.v1` schema
+- queue storage projection and invariants
+- idempotency and retry semantics
+- formal definition of `now` vs `scheduled`
+
+
+
+
 ## Endpoints
 
 ### Event summaries
@@ -390,3 +414,6 @@ Common failure modes:
 - Missing provenance fields
 - Manifest mismatch or unreconciled counts
 - Selection hash computation failure
+
+
+
