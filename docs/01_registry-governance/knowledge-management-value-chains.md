@@ -207,14 +207,42 @@ If something is a producer, it must emit a bus compliant artifact and stop there
 
 ### Role B: Transformers (they add structured value, but should not ingest raw sources)
 
-These own: windowing, clustering, summarization, enrichment, selection, packaging.
-Examples:
+Role B is not a rank. It is the **portfolio capacity bottleneck**: the meaning-making and routing layer that must be protected.
 
-* Session mining/clustering
-* Summarizer engine
-* NER to KB
-* Knowledge maps generator
-* Economic story engine (if it consumes canonical data, not raw PDFs)
+Role B owns the transformations that turn raw truth into operational knowledge:
+
+**Owns:**
+- windowing (`window_sessions`)
+- summarization with provenance (`summarize_provenance`)
+- enrichment/annotation (`enrich_annotate`)
+- clustering where relevant (`similarity_clustering`)
+- **selection + gating** (`selection_gating`)
+- **packaging** into consumable units (`package_publishable`)
+- replay/rehydration from buses (`storage_replay`) when needed
+
+**Role B must refuse:**
+- new acquisition surface area (do not become a crawler / scraper / ingestor)
+- random feature work that expands scope without strengthening throughput
+- “just parse this one more source” unless it is strictly upstream Role A work
+- bypassing buses or inventing side-channels
+
+**Portfolio rule: subordinate everything to the bottleneck**
+- If Role B throughput is low, the whole system clogs.
+- Therefore, Role A work (acquire/build) must not drown Role B work (meaning/gating/packaging).
+- Governance (Role D) should enforce WIP limits that protect Role B cycles.
+
+**Practical enforcement:**
+- Any project that is primarily B must have explicit `allowed_powers` focused on gating/meaning.
+- If a B project begins doing A-work, treat it as drift and stop-the-line.
+
+Examples:
+- Session mining/clustering
+- Summarizer engine
+- NER-to-KB (when consuming canonical chunks, not scraping)
+- Knowledge maps generator
+- Economic story engine (when consuming canonical data, not raw PDFs)
+
+
 
 ### Role C: Publishers and surfaces (they should be dumb consumers)
 

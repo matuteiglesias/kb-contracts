@@ -1,6 +1,6 @@
 ---
 title: Portfolio Bus Matrix
-sidebar_position: 17
+sidebar_position: 6
 ---
 
 # Portfolio Bus Matrix

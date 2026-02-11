@@ -1,6 +1,6 @@
 ---
 title: Corpora Registry
-sidebar_position: 18
+sidebar_position: 7
 ---
 
 # Corpora Registry

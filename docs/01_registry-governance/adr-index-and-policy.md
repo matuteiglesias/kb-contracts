@@ -1,6 +1,6 @@
 ---
 title: ADR index and policy
-sidebar_position: 6
+sidebar_position: 5
 ---
 
 # ADR index and policy
