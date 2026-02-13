@@ -54,26 +54,44 @@ const config: Config = {
     colorMode: {
       respectPrefersColorScheme: true,
     },
-
-
+  
     navbar: {
       title: 'KB Manual',
       logo: { alt: 'KB Manual', src: 'img/logo.svg' },
       items: [
+        { type: 'doc', docId: 'intro', label: 'Start here', position: 'left' },
+  
+        {
+          label: 'Hubs',
+          position: 'left',
+          items: [
+            { label: 'Home', to: '/docs/home/home' },
+            { label: 'Ecosystem registry', to: '/docs/registry-governance/ecosystem-map-and-registry' },
+            { label: 'Glossary', to: '/docs/registry-governance/glossary' },
+            { label: 'Integration seams', to: '/docs/bus-contracts/integration-seams-and-allowed-io' },
+            { label: 'Run records', to: '/docs/shared-conventions/run-record-contract' },
+            { label: 'Observability indexes', to: '/docs/shared-conventions/observability-indexes-contract' },
+            { label: 'Snapshot publishing', to: '/docs/publishing/snapshot-publishing-contract' },
+            { label: 'Contract tests', to: '/docs/contract-tests/contract-compliance-tests' },
+          ],
+        },
+  
         { type: 'docSidebar', sidebarId: 'tutorialSidebar', position: 'left', label: 'Manual' },
-        { type: 'doc', docId: 'intro', label: 'Start', position: 'left' },
         { href: 'https://github.com/matuteiglesias/kb-manual', label: 'GitHub', position: 'right' },
       ],
     },
+  
     footer: {
       style: 'dark',
       links: [
         {
           title: 'Navigate',
           items: [
+            { label: 'Start here', to: '/docs/intro' },
             { label: 'Home', to: '/docs/home/home' },
             { label: 'Ecosystem registry', to: '/docs/registry-governance/ecosystem-map-and-registry' },
             { label: 'Integration seams', to: '/docs/bus-contracts/integration-seams-and-allowed-io' },
+            { label: 'Observability indexes', to: '/docs/shared-conventions/observability-indexes-contract' },
             { label: 'Glossary', to: '/docs/registry-governance/glossary' },
           ],
         },
