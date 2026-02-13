@@ -214,3 +214,30 @@ When an agent proposes wiring changes, it must be able to answer:
 - What the smoke test is and what it validates
 - What run record will be emitted on success and on failure
 
+
+<!-- 
+
+
+Drift vs the manual (what to track, not block v0)
+
+Based on your earlier code snippets and the seam docs you uploaded, the main drift to track is:
+
+Summary request schema shape
+
+Manual tends to want more explicit “seam language” (for example a more structured flow reference)
+
+Current implementation uses work: { template_id, prompt_version, params, ... } and treats it as the flow identifier
+
+This is fine for v0 harness. The “fix” later can be either:
+
+update manual to accept template_id as the canonical flow id for now, or
+
+evolve request schema to add flow_id while keeping backward compatibility (accept either)
+
+Bus manifest strictness
+
+Your fixture manifests may be simpler than the manual’s canonical manifest schema
+
+For v0 harness, keep them minimal but valid JSON, and only tighten once adapters start truly consuming them
+
+I would not block harness v0 on perfect contract alignment. Just keep a short “Drifts” section in the harness runbook so it is explicit. -->
