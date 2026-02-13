@@ -5,7 +5,7 @@ sidebar_position: 35
 
 ## Purpose
 
-Define the UI <-> backend interface for the minimum observability layer.
+Define the UI vs backend interface for the minimum observability layer.
 
 The UI is read-only and must be able to answer:
 
