@@ -3,6 +3,12 @@
  * Keep this file small and stable.
  */
 
+/* @tailwind base;
+@tailwind components;
+@tailwind utilities; */
+
+
+
  :root {
   /* Primary: blue */
   --ifm-color-primary: #2563eb;
@@ -31,4 +37,29 @@
   --ifm-color-primary-lightest: #dbeafe;
 
   --docusaurus-highlighted-code-line-bg: rgba(96, 165, 250, 0.18);
+}
+
+.cardNoBorder {
+  border: none !important;
+}
+
+.cardTopImage {
+  display: block;
+  width: 132px;          /* make it bigger */
+  max-width: 60%;
+  margin: 18px auto 0;   /* top + centered */
+}
+
+.cardBodyCenter {
+  text-align: center;
+}
+
+.cardTitle {
+  font-size: 18px;
+  margin: 10px 0 6px;
+}
+
+.cardText {
+  color: var(--ifm-color-emphasis-700);
+  margin: 0;
 }

@@ -9,6 +9,40 @@ Run records unify observability across the ecosystem and let automation reason o
 
 A run record is the authoritative audit trail for a single execution of a pipeline entrypoint. It is required even when the run produces empty outputs, produces no outputs, or fails early.
 
+
+<!-- 
+1) The OK | WARN | FAIL mapping is not a contradiction, it is an unfrozen seam
+
+The two pages define two different schemas:
+
+UI runs index (ui_run_index.v1) requires status in OK | WARN | FAIL.
+
+Run record contract requires status in success | empty_success | partial_success | error.
+
+What’s missing is a contracted mapping rule from run record status (+ counters) into UI status. The observability indexes contract does not currently state it.
+
+Minimal deterministic mapping that fits the manual (proposal)
+
+If you want “where do I intervene” without ambiguity, the simplest mapping is:
+
+success and empty_success → OK
+
+partial_success → WARN
+
+error → FAIL
+
+Then optionally, you can upgrade OK to WARN when warnings_count > 0 even if run record status is success, because warnings are explicitly part of the run record required counters.
+
+If you agree with this, it should be frozen in one of two places:
+
+As a short subsection in Observability indexes contract (best, since it defines the UI-facing index)
+
+Or as a tiny ADR that the observability contract references (if you want mapping changes to go through ADR policy)
+
+This is not “nice to have”. Without it, two different aggregators can both be “contract compliant” while showing different UI health for the same run record. -->
+
+
+
 ## Scope and non scope
 
 This page defines:
