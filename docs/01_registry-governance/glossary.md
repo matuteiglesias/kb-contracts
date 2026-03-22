@@ -17,87 +17,135 @@ This page is not a tutorial. If you need rationale or examples, follow the contr
 
 ## Event
 
-Meaning: An atomic record of something that happened at a point in time, represented as a single JSON object in an append-only stream.  
-Not: A session, a summary, or a document chunk.  
+Meaning: An atomic record of something that happened at a point in time, represented as a single JSON object in an append-only stream.
+Not: A session, a summary, or a document chunk.
 Defined in: Bus contracts: Event.
 
 ## Session
 
-Meaning: A time window grouping of related events, with explicit boundaries and pointers back to source event IDs.  
-Not: A conversation, a topic, or a cluster label by itself.  
+Meaning: A time window grouping of related events, with explicit boundaries and pointers back to source event IDs.
+Not: A conversation, a topic, or a cluster label by itself.
 Defined in: Bus contracts: Session.
 
 ## Unit
 
-Meaning: A normalized, schema-validated payload produced by a pipeline stage as a stable intermediate representation for downstream work.  
-Not: A raw input, an ad hoc dict, or a UI-only object.  
+Meaning: A normalized, schema-validated payload produced by a pipeline stage as a stable intermediate representation for downstream work.
+Not: A raw input, an ad hoc dict, or a UI-only object.
 Defined in: Canonical unit model.
 
 ## Chunk
 
-Meaning: A document-centric unit representing a span of a source document (pages, sections, offsets) with stable provenance metadata.  
-Not: A chat message event or a digest memo.  
+Meaning: A document-centric unit representing a span of a source document (pages, sections, offsets) with stable provenance metadata.
+Not: A chat message event or a digest memo.
 Defined in: Bus contracts: Chunk.
 
 ## Summary
 
 Meaning: a controlled, policy-defined representation of source content whose purpose is to preserve meaning while reducing entropy; must carry provenance pointers back to canonical sources.
-Not: A digest, a bag, or a free-form note without provenance.  
+Not: A digest, a bag, or a free-form note without provenance.
 Defined in: Bus contracts: Summary.
+
+## Document summary
+
+Meaning: A Summary Bus artifact whose canonical source is one document or a deterministic document slice derived from Chunk Bus aligned inputs.
+Not: A raw chunk, a digest, or an ad hoc note over a document.
+Defined in: Summary Bus contract.
+
+## Chunk-set summary
+
+Meaning: A Summary Bus artifact whose canonical source is a deterministic set of chunk IDs, optionally spanning one or more documents.
+Not: A retrieval result list, or an undocumented chunk bundle.
+Defined in: Summary Bus contract.
+
+## Hierarchical synthesis
+
+Meaning: A structured summary representation whose nodes preserve document meaning at multiple levels while remaining traceable to canonical source selections.
+Not: A UI tree with no provenance, or a replacement for `outputs.summary_text`.
+Defined in: Summary Bus contract and Meaning Lives in Summaries.
+
+## Summary text
+
+Meaning: The required textual projection of a summary artifact, stored as `outputs.summary_text` for compatibility-safe downstream consumption.
+Not: The full structured synthesis object, or raw source text.
+Defined in: Summary Bus contract.
+
+## Structured synthesis
+
+Meaning: Optional structured summary payloads such as `outputs.hierarchy`, intended for downstream reuse when a richer representation than plain summary text is needed.
+Not: A reason to remove `outputs.summary_text`, or a license for consumers to ignore provenance.
+Defined in: Summary Bus contract.
+
+## Summary tree
+
+Meaning: A tree-shaped form of hierarchical synthesis for a document or chunk-set summary.
+Not: A folder layout, or a navigation widget by itself.
+Defined in: Summary Bus contract.
 
 ## Digest
 
-Meaning: A packaged multi-summary artifact intended for consumption (human or publisher), typically assembled via selection + ordering + framing rules.  
-Not: The summary bus itself, or raw model output.  
+Meaning: A packaged multi-summary artifact intended for consumption (human or publisher), typically assembled via selection + ordering + framing rules.
+Not: The summary bus itself, or raw model output.
 Defined in: Bus contracts: Digest.
 
 ## Bag
 
-Meaning: A curated collection of related summaries or units assembled by explicit selection rules and emitted as a digest subtype.  
-Not: A database table, a generic folder of markdown, or an untracked aggregation.  
+Meaning: A curated collection of related summaries or units assembled by explicit selection rules and emitted as a digest subtype.
+Not: A database table, a generic folder of markdown, or an untracked aggregation.
 Defined in: Digest contract: Bag types and selection rules.
 
 ## Artifact
 
-Meaning: Any materialized output of a pipeline run that is intended to be consumed downstream, including indexes, manifests, snapshots, and published markdown.  
-Not: Temporary scratch files or intermediate debug outputs without run records.  
+Meaning: Any materialized output of a pipeline run that is intended to be consumed downstream, including indexes, manifests, snapshots, and published markdown.
+Not: Temporary scratch files or intermediate debug outputs without run records.
 Defined in: Artifact contract: Outputs and naming.
 
 ## Manifest
 
-Meaning: A small integrity and bookkeeping record that describes a produced batch or snapshot, including counts, hashes, schema versions, and pointers to payload files.  
-Not: A run record, an index, or a config file.  
+Meaning: A small integrity and bookkeeping record that describes a produced batch or snapshot, including counts, hashes, schema versions, and pointers to payload files.
+Not: A run record, an index, or a config file.
 Defined in: Manifest contract.
 
 ## Run record
 
-Meaning: The canonical audit log of a pipeline run, capturing inputs, outputs, status, errors, versions, and validation results.  
-Not: Application logs, notebooks, or ad hoc print statements.  
+Meaning: The canonical audit log of a pipeline run, capturing inputs, outputs, status, errors, versions, and validation results.
+Not: Application logs, notebooks, or ad hoc print statements.
 Defined in: Run record contract and error taxonomy.
 
 ## Seam
 
-Meaning: A defined integration boundary where downstream consumers are allowed to read upstream outputs only via specified endpoints and manifests.  
-Not: Importing upstream internal modules, or reading upstream raw inputs directly.  
+Meaning: A defined integration boundary where downstream consumers are allowed to read upstream outputs only via specified endpoints and manifests.
+Not: Importing upstream internal modules, or reading upstream raw inputs directly.
 Defined in: Seams and integration rules.
 
 ## Bus
 
-Meaning: A shared, contract-defined stream or directory of artifacts that multiple modules read and write through stable conventions.  
-Not: A message queue requirement, or a shared database schema you mutate freely.  
+Meaning: A shared, contract-defined stream or directory of artifacts that multiple modules read and write through stable conventions.
+Not: A message queue requirement, or a shared database schema you mutate freely.
 Defined in: Bus overview and seam rules.
 
 ## Publisher
 
-Meaning: A component that materializes consumable outputs from an ordered stream of units or digests, typically as snapshots, tiles, and indexes with atomic promotion.  
-Not: A producer of raw events or a summarizer.  
+Meaning: A component that materializes consumable outputs from an ordered stream of units or digests, typically as snapshots, tiles, and indexes with atomic promotion.
+Not: A producer of raw events or a summarizer.
 Defined in: Publishing contract: Snapshots and tiles.
 
 ## Source adapter
 
-Meaning: A boundary module that converts an external source format into canonical units on a bus, enforcing schema validation and idempotency.  
-Not: A consumer that enriches or republishes existing bus artifacts.  
+Meaning: A boundary module that converts an external source format into canonical units on a bus, enforcing schema validation and idempotency.
+Not: A consumer that enriches or republishes existing bus artifacts.
 Defined in: Source adapters: Inputs, outputs, and validation.
+
+## Source type: document
+
+Meaning: A summary source classification indicating that the summary input is one document or a deterministic document slice.
+Not: A generic label for any textual source.
+Defined in: Summary Bus contract.
+
+## Source type: chunk_set
+
+Meaning: A summary source classification indicating that the summary input is a deterministic set of chunk IDs.
+Not: A substitute for recording the actual chunk IDs in `source_ids`.
+Defined in: Summary Bus contract.
 
 - **corpus**: a governed slice of knowledge with explicit in-scope/out-of-scope boundaries; the unit of “finite dominance”.
 

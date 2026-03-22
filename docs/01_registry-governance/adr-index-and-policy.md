@@ -27,9 +27,10 @@ Keep an index so decisions are discoverable. Each ADR should be linkable from he
 
 Add new entries in reverse chronological order.
 
-- ADR-0001: (example) Canonical Event schema v1
-- ADR-0002: (example) Run record contract and error taxonomy v1
+- ADR-0004: Expand Summary Bus to first-class document and chunk-set summaries (`/docs/registry-governance/adr-0004-document-summary-expansion`)
 - ADR-0003: (example) Digest publishing layout and index rules
+- ADR-0002: (example) Run record contract and error taxonomy v1
+- ADR-0001: (example) Canonical Event schema v1
 
 The index should point to the ADR file paths under this site.
 

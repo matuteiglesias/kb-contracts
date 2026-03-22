@@ -5,7 +5,7 @@ sidebar_position: 14
 
 # Chunk Bus contract
 
-The Chunk Bus is the canonical contract for document chunks. It is independent from chat events and sessions.
+The Chunk Bus is the canonical contract for document chunks. It is independent from chat events and sessions. It is also the canonical upstream for document-oriented summaries emitted to Summary Bus through the Summary Request Seam.
 
 ## Scope and non scope
 
@@ -170,6 +170,8 @@ Recommended derivation inputs:
 - `document_id`
 - a stable span key if available, otherwise an ordered index within the document
 - `text_hash`
+
+`document_id` and `chunk_id` are the canonical anchors expected by `document_summary` and `chunk_set_summary` producers. Cross-bus document summarization should preserve those anchors so provenance can be reconciled against Chunk Bus.
 
 If chunking boundaries change, chunk ids may change. That is acceptable only when:
 
@@ -362,3 +364,13 @@ Common failure modes and required responses:
   - Record error `PROVENANCE_INVALID:missing_source_checksum`
 
 All failures must be emitted as run record entries. Downstream consumers must fail fast when these invariants are violated.
+
+
+## Cross-contract references
+
+When Chunk Bus outputs are summarized, callers must use the Summary Request Seam and downstream consumers must read the resulting artifacts from Summary Bus rather than summarizing raw chunks inside their own repos.
+
+See also:
+
+- Summary Bus contract
+- Summary Request Seam

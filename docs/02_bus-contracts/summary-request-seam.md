@@ -217,8 +217,21 @@ If `flow_id` is unknown, the request is rejected as `rejected_unknown_flow`.
   - `crm_update`
   - `research_digest`
   - `civic_monitor`
+  - `hierarchical_synthesis` for document-oriented summary trees
 
 ---
+
+
+## Document-oriented request guidance
+
+When `input.bus=chunk_bus`, callers are requesting summaries over canonical document-derived inputs.
+
+Rules:
+
+- Prefer `summary_kind=document_summary` when the request refers to one document or one deterministic document slice.
+- Prefer `summary_kind=chunk_set_summary` when the request refers to a deterministic list of `chunk_id` values or to a selection manifest over chunks.
+- Prefer `summary_subkind=hierarchical_synthesis` for document-oriented summaries that intend to emit a structured hierarchy in Summary Bus.
+- For document or corpus requests, `flow_ref` should point to a registered Summarizer Service flow oriented to document synthesis, not to an ad hoc caller-owned prompt pack.
 
 # Queue storage projection
 
@@ -385,69 +398,150 @@ Rules:
 
 # Example requests
 
-## Example A: urgent summary for explicit ids
+## Example A: urgent event summary for explicit ids
 
 ```json
 {
-  "schema_version":"summary_request.v1",
-  "request_id":"3f1a50c6-61d4-4f1d-8a42-7f5a6a6d2f73",
-  "created_at":"2026-02-11T23:02:11Z",
-  "requested_by":{"repo":"job_pipeline","component":"scorer","version":"0.7.2","git_commit":"abc1234"},
-  "urgency":"now",
-  "work":{
-    "output_bus":"summary_bus",
-    "output_kind":"summary_item",
-    "summary_kind":"event_summary",
-    "summary_subkind":"ops_brief",
-    "flow_ref":{"kind":"registry","flow_id":"gpt.session.summarize.parsed_message.v3"},
-    "params":{"max_tokens":350}
+  "schema_version": "summary_request.v1",
+  "request_id": "f6c2b2ea-4a26-48fa-90ab-4bf5c4fe2942",
+  "created_at": "2026-02-11T23:02:11Z",
+  "requested_by": {
+    "repo": "ops_repo",
+    "component": "incident_bot",
+    "version": "0.8.0"
   },
-  "input":{"mode":"ids","bus":"event_bus","ids":["evt_01HZZ...","evt_01HZY..."]},
-  "idempotency_key":"b1b6d6a4b9c2d8e0"
+  "urgency": "now",
+  "work": {
+    "output_bus": "summary_bus",
+    "output_kind": "summary_item",
+    "summary_kind": "event_summary",
+    "summary_subkind": "ops_brief",
+    "flow_ref": {
+      "kind": "registry",
+      "flow_id": "ops.run.summarize.pipeline_run.v1"
+    },
+    "params": {}
+  },
+  "input": {
+    "mode": "ids",
+    "bus": "event_bus",
+    "ids": ["evt_001", "evt_002"]
+  }
 }
 ```
 
-## Example B: scheduled summary from a selection manifest
+## Example B: scheduled chunk-set summary from a selection manifest
 
 ```json
 {
-  "schema_version":"summary_request.v1",
-  "request_id":"a2bdbf8e-6e36-4a03-ae59-319d8f3a7b2b",
-  "created_at":"2026-02-11T23:05:00Z",
-  "requested_by":{"repo":"crm_layer","component":"weekly_digest","version":"1.2.0","git_commit":"def5678"},
-  "urgency":"scheduled",
-  "not_before":"2026-02-12T09:00:00Z",
-  "work":{
-    "output_bus":"summary_bus",
-    "output_kind":"summary_item",
-    "summary_kind":"session_summary",
-    "summary_subkind":"crm_update",
-    "flow_ref":{"kind":"registry","flow_id":"digest.weekly.summarize.weekly_digest.v1"},
-    "params":{}
+  "schema_version": "summary_request.v1",
+  "request_id": "7b1913fd-1511-4cfd-87aa-66120d36b3f7",
+  "created_at": "2026-03-22T09:15:00Z",
+  "requested_by": {
+    "repo": "research_ops",
+    "component": "summary_scheduler",
+    "version": "1.2.0"
   },
-  "input":{"mode":"selection_manifest","manifest_path":"/home/matias/buses/selection_manifests/2026-02-11.crm-weekly.json","selection_hash":"sha256:9d1c..."},
-  "idempotency_key":"9d6f8b3b0c6a"
+  "urgency": "scheduled",
+  "not_before": "2026-03-22T10:00:00Z",
+  "work": {
+    "output_bus": "summary_bus",
+    "output_kind": "summary_item",
+    "summary_kind": "chunk_set_summary",
+    "summary_subkind": "hierarchical_synthesis",
+    "flow_ref": {
+      "kind": "registry",
+      "flow_id": "docs.chunk_set.summarize.brief.v1"
+    },
+    "params": {"render_profile": "medium"}
+  },
+  "input": {
+    "mode": "selection_manifest",
+    "manifest_path": "selectors/research/2026-03-22.chunk_selection.manifest.json",
+    "selection_hash": "sha256:2d90c8"
+  }
 }
 ```
 
----
+## Example C: urgent document summary from Chunk Bus ids
+
+```json
+{
+  "schema_version": "summary_request.v1",
+  "request_id": "2d245a54-d0ea-45e0-9916-8dd908580f63",
+  "created_at": "2026-03-22T09:20:00Z",
+  "requested_by": {
+    "repo": "docs_portfolio",
+    "component": "document_router",
+    "version": "2.0.1"
+  },
+  "urgency": "now",
+  "work": {
+    "output_bus": "summary_bus",
+    "output_kind": "summary_item",
+    "summary_kind": "document_summary",
+    "summary_subkind": "hierarchical_synthesis",
+    "flow_ref": {
+      "kind": "registry",
+      "flow_id": "docs.chunk_set.summarize.brief.v1",
+      "variant": "long_context"
+    },
+    "params": {"document_id": "doc_2026_03_22_alpha"}
+  },
+  "input": {
+    "mode": "ids",
+    "bus": "chunk_bus",
+    "ids": ["doc_2026_03_22_alpha"]
+  }
+}
+```
+
+## Example D: document summary from a selection manifest
+
+```json
+{
+  "schema_version": "summary_request.v1",
+  "request_id": "3a1f66d8-16c8-4e21-b93d-7b6133ed2a14",
+  "created_at": "2026-03-22T09:30:00Z",
+  "requested_by": {
+    "repo": "docs_portfolio",
+    "component": "document_router",
+    "version": "2.0.1"
+  },
+  "urgency": "now",
+  "work": {
+    "output_bus": "summary_bus",
+    "output_kind": "summary_item",
+    "summary_kind": "document_summary",
+    "summary_subkind": "hierarchical_synthesis",
+    "flow_ref": {
+      "kind": "registry",
+      "flow_id": "docs.chunk_set.summarize.brief.v1"
+    },
+    "params": {"selection_mode": "document_full"}
+  },
+  "input": {
+    "mode": "selection_manifest",
+    "manifest_path": "selectors/docs/2026-03-22.document_alpha.manifest.json",
+    "selection_hash": "sha256:57ee1a"
+  }
+}
+```
 
 # Operational responsibilities
 
 ## Caller responsibilities
 
-* Emit valid `summary_request.v1` objects to the queue
-* Use stable `summary_kind` and `summary_subkind`
-* Select a stable `flow_ref.flow_id` (registry-owned)
-* Provide `idempotency_key` when possible
-* Use `scheduled` for non-urgent requests, with `not_before`
+- Validate that the request object is well formed before append
+- Use a registered `flow_ref`, not prompt assets copied into the queue
+- Use `chunk_bus` only when the upstream source is a canonical document-derived artifact set
+- Do not write Summary Bus artifacts directly
 
 ## Summarizer responsibilities
 
-* Validate, quarantine, and continue (never block on one bad line)
-* Enforce `scheduled/not_before`
-* Resolve `flow_ref` only via the flow registry dataset (no guessing)
-* Guarantee idempotency
-* Write Summary Bus artifacts and manifests
-* Emit acknowledgements for observability
-
+- Validate requests and quarantine bad lines
+- Resolve `flow_ref` via the local Flow Registry
+- Apply idempotency / dedupe rules
+- Read the declared upstream source via the sanctioned seam
+- Write Summary Bus artifacts and manifests
+- Preserve the request seam as the only caller-facing ingress to Summary Bus
