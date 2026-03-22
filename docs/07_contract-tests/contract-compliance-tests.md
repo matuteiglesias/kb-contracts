@@ -114,22 +114,31 @@ Failure classification:
 ### T003 Summary Bus schema and provenance validation
 
 Validates:
-- Summary schema for event summaries and session summaries
+- Summary schema for event summaries, session summaries, document summaries, and chunk-set summaries
 - Required provenance fields present
 - Source ids list present and non empty for non empty summary sets
 - Source hash or selection checksum exists
 - Model metadata fields exist
 - Prompt hash exists
 - Summarizer version exists
+- Optional hierarchy payloads, when present, satisfy the minimum documented structure
 
 Inputs:
 - Event summaries day file and manifest
 - Session summaries day file and manifest
-- Upstream event and session manifests referenced
+- Document summaries day file and manifest
+- Chunk-set summaries day file and manifest
+- Upstream event, session, and chunk manifests referenced
+- Fixtures or sample sets covering document and chunk-set summary families
 
 Pass conditions:
 - All summaries validate schema
 - Every summary includes source ids
+- If `source_type=document`, `source_ids` include a valid `document_id` anchor
+- If `source_type=chunk_set`, `source_ids` include valid `chunk_id` anchors
+- `selection.source_text_hash` reconciles with the deterministic source selection
+- `outputs.summary_text` exists for every summary
+- If `outputs.hierarchy` exists, it validates against the minimum structure declared by the producer
 - Counts reconcile with upstream selection rules recorded in manifest and run record
 - No silent drops, any skip is recorded with reason counts
 

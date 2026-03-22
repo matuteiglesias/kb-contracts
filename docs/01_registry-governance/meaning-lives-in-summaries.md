@@ -28,6 +28,8 @@ Raw text is the substrate. Summaries are the **operational surface** you can rou
 - Summaries are low-entropy and composable.
 - The system’s *center of gravity* should live at the summary layer.
 
+For document-like sources, that summary layer includes summaries derived from `chunk_bus`, not just summaries derived from events or sessions.
+
 ### 2) Summaries are the join key across corpora
 
 Corpora are your *what to know*. Projects are your *what to do*.  
@@ -39,6 +41,8 @@ In practice:
 
 **This makes summaries the “exchange currency” of the portfolio.**
 
+For document-like sources, the canonical summary artifact is a traceable hierarchical synthesis derived from Chunk Bus inputs. The Summary Bus stores both a compatible textual projection (`outputs.summary_text`) and, when available, a structured hierarchy for downstream reuse.
+
 ### 3) The Summary Bus is a hub, not a leaf
 
 Treat `summary_bus` as your **main junction**:
@@ -47,7 +51,8 @@ Treat `summary_bus` as your **main junction**:
 - Publishers (Role C) are mostly consumers of `summary_bus` (often via `digest_bus` / `snapshot_bus`).
 - Governance (Role D) watches all of it and enforces stop rules.
 
+The summary layer covers event summaries, session summaries, and document-oriented summaries produced from deterministic chunk or document selections. Downstream may consume either the textual projection or the structured synthesis surface, but it should still consume summaries rather than raw text.
+
 If the Summary Bus is not a hub, the portfolio becomes raw-data-centric again.
 A portfolio that routes on summaries stays light.
 A portfolio that routes on raw text gets slower the more it grows.
-

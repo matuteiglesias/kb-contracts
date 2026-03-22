@@ -29,6 +29,7 @@ It does not define:
 - bus schemas (see bus contracts)
 - summarizer request schemas (see summary request seam)
 - pipeline internals
+- full summary browsing or full-text summary search
 
 ## Definitions
 
@@ -313,3 +314,14 @@ If the UI needs more detail for a run, it can display manifest_path and log_path
 - no full text search
 - no write actions
 - no job trigger buttons
+
+
+## Summary-stream visibility rule
+
+The aggregator may expose counts or freshness signals for `documents.summary` and `chunk_sets.summary` streams in run or corpora views when those streams exist in ground truth.
+
+Rules:
+
+- This is for observability only, not for summary browsing.
+- The UI may indicate that document-oriented summary streams were produced, stale, empty, or failed.
+- The UI must still read compacted indexes only, never Summary Bus directory trees.

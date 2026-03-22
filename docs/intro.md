@@ -42,6 +42,8 @@ Use this sequence to avoid accidental coupling:
    - Digest Bus: [/docs/bus-contracts/digest-bus-contract](/docs/bus-contracts/digest-bus-contract)  
    - Chunk Bus: [/docs/bus-contracts/chunk-bus-contract](/docs/bus-contracts/chunk-bus-contract)
 
+   For document-like sources: canonical inputs go through Chunk Bus, summary requests go through the Summary Request Seam, and sanctioned outputs land on Summary Bus as document or chunk-set summaries.
+
 5. **Shared invariants:** stable ids, manifests, run records  
    - Stable IDs: [/docs/shared-conventions/stable-ids-and-naming-rules](/docs/shared-conventions/stable-ids-and-naming-rules)  
    - Manifests: [/docs/shared-conventions/manifests-and-integrity-rules](/docs/shared-conventions/manifests-and-integrity-rules)  
@@ -114,6 +116,7 @@ These are the pages that define what is real. If they drift, downstream work bec
   [/docs/bus-contracts/sessions-bus-contract](/docs/bus-contracts/sessions-bus-contract)
 - Summary Bus contract  
   [/docs/bus-contracts/summary-bus-contract](/docs/bus-contracts/summary-bus-contract)
+  - Includes event, session, document, and chunk-set summary families as sanctioned summary artifacts.
 - Digest Bus contract  
   [/docs/bus-contracts/digest-bus-contract](/docs/bus-contracts/digest-bus-contract)
 - Chunk Bus contract  
@@ -151,7 +154,7 @@ These are the pages that define what is real. If they drift, downstream work bec
 
 ## Legend
 
-- **Bus**: a canonical artifact stream with stable endpoints and schema.
+- **Bus**: a canonical artifact stream with stable endpoints and schema. Summary Bus includes document-oriented summaries as well as event/session summaries.
 - **Seam**: the only allowed IO between repos. Prefer append only requests and index driven reads.
 - **Manifest**: integrity and traceability surface for an artifact set.
 - **Run record**: the audit entry for what ran, with status and provenance.

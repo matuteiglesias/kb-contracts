@@ -68,9 +68,11 @@ Downstream users:
 
 Allowed upstream inputs:
 
-- `summaries/events/YYYY-MM-DD.summary.jsonl`
-- `summaries/sessions/YYYY-MM-DD.summary.jsonl`
-- `summaries/manifest/YYYY-MM-DD.manifest.json`
+- `summaries/events/YYYY-MM-DD.events.summary.jsonl`
+- `summaries/sessions/YYYY-MM-DD.sessions.summary.jsonl`
+- `summaries/documents/YYYY-MM-DD.documents.summary.jsonl`
+- `summaries/chunk_sets/YYYY-MM-DD.chunk_sets.summary.jsonl`
+- `summaries/manifest/YYYY-MM-DD.*.summary.manifest.json`
 
 Notes:
 
@@ -132,7 +134,7 @@ Bad:
 Required instead:
 
 - Sessions reads Event Bus endpoints only
-- Summary reads Event Bus or Sessions Bus endpoints only
+- Summary reads Event Bus, Sessions Bus, or sanctioned Chunk Bus inputs via the declared seam only
 - Digests read Summary Bus endpoints, and only if missing, follow the explicit downgrade policy if one exists
 
 ### Forbidden: reading upstream scratch outputs
@@ -165,7 +167,7 @@ This table is the allowed IO policy by bus role. If a repo claims a role, it mus
 |---|---|---|
 | Event Bus producer | Raw exports and acquisition sources local to the repo | Event Bus daily files and manifests, run records |
 | Sessions Bus producer | Event Bus daily files and manifests | Sessions daily files, clusters outputs, manifests, run records |
-| Summary Bus producer | Event Bus and or Sessions Bus endpoints plus manifests | Summary daily files, manifests, run records |
+| Summary Bus producer | Event Bus, Sessions Bus, and or Chunk Bus endpoints plus manifests, plus sanctioned selection manifests via the Summary Request Seam | Summary daily files for events, sessions, documents, and chunk sets; manifests; run records |
 | Digest Bus builder | Summary Bus endpoints plus manifests, plus selector registries | Digest indexes, published artifacts, atomic index updates, run records |
 | Chunk Bus producer | Documents and source files local to the repo | Canonical chunk files, manifests, processed files state, run records |
 | Publisher | Digest indexes or any other publish contract input | Snapshot outputs with manifest, tiles, atomic promotion logs |
@@ -241,3 +243,11 @@ Your fixture manifests may be simpler than the manual’s canonical manifest sch
 For v0 harness, keep them minimal but valid JSON, and only tighten once adapters start truly consuming them
 
 I would not block harness v0 on perfect contract alignment. Just keep a short “Drifts” section in the harness runbook so it is explicit. -->
+## Document summarization seam example
+
+Sanctioned flow:
+
+- source documents -> Chunk Bus producer -> `chunk_bus`
+- caller appends `summary_request.v1` to the Summary Request Seam
+- Summarizer Service reads Chunk Bus anchors and emits `document_summary` or `chunk_set_summary` artifacts to `summary_bus`
+- downstream consumers read only sanctioned Summary Bus endpoints and manifests
