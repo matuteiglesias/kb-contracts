@@ -27,6 +27,7 @@ Keep an index so decisions are discoverable. Each ADR should be linkable from he
 
 Add new entries in reverse chronological order.
 
+- ADR-0005: Contract profiles and promotion path for paper-kb (`/docs/registry-governance/adr-0005-contract-profiles-and-promotion`)
 - ADR-0004: Expand Summary Bus to first-class document and chunk-set summaries (`/docs/registry-governance/adr-0004-document-summary-expansion`)
 - ADR-0003: (example) Digest publishing layout and index rules
 - ADR-0002: (example) Run record contract and error taxonomy v1

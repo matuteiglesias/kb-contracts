@@ -18,6 +18,8 @@ This page defines:
 
 This page does not define implementation details, internal module layouts, or how any one repo parses raw upstream formats.
 
+For profile-based adoption guidance that does not weaken seam or allowed-IO enforcement, see [Contract profiles and promotion ladder](/docs/shared-conventions/contract-profiles-and-promotion-ladder).
+
 ## Seam list
 
 A seam is an approved dependency between two bus endpoints. Downstream code may read only the seam endpoints listed below.
