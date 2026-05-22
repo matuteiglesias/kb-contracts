@@ -152,3 +152,26 @@ Defined in: Summary Bus contract.
 - **meaning surface**: the portfolio layer where knowledge becomes operationally usable (routable, joinable, auditable). In this system, that layer is summaries.
 
 - **snapshot**: a published, immutable surface artifact (site page, post, dataset release, docs build) traceable to upstream digests/summaries/manifests.
+
+
+## Contract profile
+
+A declared assurance level for an artifact contract that indicates whether the artifact is local-only, published for scoped interop, or canonical bus-grade.
+
+See: [Contract profiles and promotion ladder](/docs/shared-conventions/contract-profiles-and-promotion-ladder).
+
+## Local product artifact
+
+A Profile 0 artifact used inside one repo or local runtime for product iteration. It is private unless promoted through a declared adapter and seam.
+
+## Published interop artifact
+
+A Profile 1 artifact published for one or more external consumers via an explicit seam, with schema version, manifest, and run record guarantees.
+
+## Canonical bus artifact
+
+A Profile 2 artifact that fully satisfies its bus contract and is safe as long-lived ecosystem source-of-truth input for downstream automation.
+
+## Promotion adapter
+
+A minimal adapter that transforms a private or scoped artifact into a higher-profile published artifact while enforcing schema, manifest, run record, and seam requirements.

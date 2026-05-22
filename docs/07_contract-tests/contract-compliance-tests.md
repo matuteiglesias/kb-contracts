@@ -52,6 +52,20 @@ A project is considered integrated only if:
 
 A project that passes internal tests but fails these is treated as non integrated.
 
+
+## Profile-aware contract tests
+
+Profile-aware testing clarifies local usefulness versus integration readiness:
+
+- **Profile 0**: local schema smoke tests, stable ID tests, no cross-repo compliance claim
+- **Profile 1**: manifest + run record + declared seam + schema validation + smoke test
+- **Profile 2**: full bus compliance tests for the claimed canonical role
+
+A project that only passes Profile 0 tests is usable locally but is not integrated across repos.
+A project claiming a bus role must pass the full relevant compliance tests.
+
+See [Contract profiles and promotion ladder](/docs/shared-conventions/contract-profiles-and-promotion-ladder).
+
 ## Test catalog
 
 Each test includes:

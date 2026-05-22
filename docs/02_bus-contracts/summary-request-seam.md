@@ -5,6 +5,8 @@ sidebar_position: 16
 
 # Summary Request Seam
 
+> Profile note: Local product applications may expose direct summary-generation actions for interactive use. These shortcuts are Profile 0 or Profile 1 product APIs, not Summary Bus producers unless they emit Summary Bus artifacts. In bus mode, document summarization should enter through the Summary Request Seam and publish to Summary Bus. See [Contract profiles and promotion ladder](/docs/shared-conventions/contract-profiles-and-promotion-ladder).
+
 This page defines the **Summary Request seam**: a narrow, append-only request interface that other repos use to ask the Summarizer Service for work.
 
 This seam is **not a bus**. It is an orchestration ingress that keeps producers and consumers from writing summaries directly and prevents drift in how work is requested.

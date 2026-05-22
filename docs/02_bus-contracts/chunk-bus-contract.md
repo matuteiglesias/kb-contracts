@@ -7,6 +7,8 @@ sidebar_position: 14
 
 The Chunk Bus is the canonical contract for document chunks. It is independent from chat events and sessions. It is also the canonical upstream for document-oriented summaries emitted to Summary Bus through the Summary Request Seam.
 
+> Profile note: Canonical Chunk Bus requirements apply when a repo claims the Chunk Bus producer role or exposes chunks as a cross-repo bus endpoint. Repos may maintain lighter local chunk artifacts under Profile 0, but those artifacts are private unless promoted through an adapter that emits a compliant interop or canonical bus artifact. See [Contract profiles and promotion ladder](/docs/shared-conventions/contract-profiles-and-promotion-ladder).
+
 ## Scope and non scope
 
 This page defines:
