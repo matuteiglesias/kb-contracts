@@ -5,6 +5,42 @@ sidebar_position: 32
 
 # Manifests and integrity rules
 
+> **Authority classification:** artifact-level identity, portable provenance, finalized payload bytes, and checksum rules are normative knowledge-interoperability concerns. Run lifecycle, staging implementation, atomic promotion mechanics, retries, rollback, and operational status history are **legacy shared guidance / deferred operational extraction**, not requirements of the machine-readable KB interoperability release. See ADR-0006.
+
+## Normative knowledge artifact manifest boundary
+
+The shared schema is `knowledge_artifact_manifest.v1`. It describes one finalized knowledge product, not one run. Examples include a chunk set, summary set, selected-evidence packet, context catalog, context-source descriptor, published snapshot, or exported knowledge artifact.
+
+**Machine-readable authority:** [`contracts/schemas/knowledge_artifact_manifest.v1.schema.json`](https://github.com/matuteiglesias/kb-contracts/blob/main/contracts/schemas/knowledge_artifact_manifest.v1.schema.json). See the checked-in [valid example](https://github.com/matuteiglesias/kb-contracts/blob/main/contracts/examples/valid/knowledge_artifact_manifest.v1.json) and [invalid conformance cases](https://github.com/matuteiglesias/kb-contracts/tree/main/contracts/examples/invalid). The prose list below is a reading aid; the registered schema controls exact shape and validation.
+
+Its required fields are:
+
+- `schema_id`
+- `schema_version`
+- `artifact_id`
+- `artifact_family`
+- `artifact_kind`
+- `producer_id`
+- `producer_version`
+- `created_at`
+- `logical_ref`
+- `payload_ref`
+- `media_type`
+- `byte_size`
+- `checksum`
+- `provenance`
+- `integrity_status`
+
+`payload_ref` must be logical or repository-relative and portable. Absolute local paths are prohibited. The checksum uses SHA-256 over exact finalized file bytes.
+
+The knowledge artifact manifest does not contain run stages, runtime environment, invocation arguments, retries, full warnings/errors, promotion lifecycle, or operational status history. Optional `run_id`, `run_record_ref`, and `producer_manifest_ref` values are opaque, case-preserved producer references; this contract does not define the referenced documents.
+
+The remainder of this page records the pre-ADR-0006 shared manifest and pipeline guidance. Where its generic required fields or operational rules conflict with the boundary above, this section and ADR-0006 control. The legacy material remains available for producer migration and possible future operational extraction.
+
+## Legacy generic manifest and pipeline guidance
+
+> **Deprecated as universal authority.** The sections below describe the pre-ADR-0006 generic manifest and operational publication model. They are not requirements of `kb.knowledge_artifact_manifest@1.0` and are not enforced by `npm run contract:validate`. Producers may retain them locally or use them as migration evidence. Do not copy their field lists into a new public contract.
+
 Manifests make artifacts verifiable, rerunnable, and safe to consume across repos.
 
 This page defines the manifest schema behavior, hashing behavior, and promotion rules that prevent silent corruption and drift.
@@ -47,7 +83,9 @@ Do not create multiple manifest types for the same artifact family unless an ADR
 
 ## Manifest schema
 
-### Required fields
+### Legacy required fields
+
+The following list is retained verbatim as historical guidance. It is superseded for Knowledge Profile 1 by the registered `kb.knowledge_artifact_manifest@1.0` schema linked above.
 
 Every manifest must include at least:
 

@@ -5,7 +5,9 @@ sidebar_position: 13
 
 # Digest Bus contract
 
-Contract for memory bags and published digest artifacts.
+> **Classification: legacy family contract / migration source.** Digest and bag semantics remain useful producer guidance, but this prose shape is not a registered schema in `kb-interop.v1-rc1`. Operational build and publication rules remain producer-owned.
+
+Legacy family guidance for memory bags and published digest artifacts.
 
 ## Purpose
 

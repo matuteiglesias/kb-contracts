@@ -5,6 +5,8 @@ sidebar_position: 80
 
 # Contract compliance tests
 
+> **Authority note:** knowledge interoperability tests validate knowledge schemas, artifact manifests, portable provenance, stable-reference preservation, compatibility, and seam behavior. Run records, operational errors, lifecycle states, and promotion mechanics are candidate operational tests and are not required for Knowledge Interoperability Profile 1. See ADR-0006.
+
 This page defines the ecosystem level tests that validate contracts and integration seams.
 
 These are not code style checks and not unit tests for internal modules. They are cross repo contract tests that prove a producer emits compliant bus artifacts, and a consumer can safely rely on those artifacts without reading upstream internals.
@@ -18,7 +20,7 @@ In scope:
 - schemas for bus artifacts and publishing artifacts
 - manifests and integrity rules
 - stable ID behavior test vectors
-- run record schema and error taxonomy compliance
+- opaque operational-evidence reference preservation when such references are present
 - seam compliance, meaning allowed IO only
 
 Out of scope:
@@ -47,10 +49,35 @@ Regardless of where code lives, this page is the authoritative list of tests, th
 A project is considered integrated only if:
 
 - It passes the contract compliance tests relevant to the bus role it claims.
-- It can run its smoke test and produce a run record, even when outputs are empty.
+- It can run its deterministic offline knowledge-contract validation command against checked-in fixtures.
 - It does not violate seam rules, meaning it reads only allowed bus endpoints.
 
 A project that passes internal tests but fails these is treated as non integrated.
+
+## Current machine-readable gate
+
+The release-candidate gate is:
+
+```bash
+npm run contract:validate
+```
+
+It runs offline and validates:
+
+- the closed registry and exactly three approved Draft 2020-12 schemas;
+- all checked-in valid fixtures;
+- every invalid fixture against its declared schema keyword, path, missing property, or semantic error code;
+- optional namespaced-extension compatibility;
+- current/previous-version and unchanged historical validation;
+- stable-reference preservation and alias vectors;
+- schema, profile, module, and release cross-references;
+- repository-relative paths;
+- the complete exact-byte SHA-256 inventory; and
+- every normative file against the release candidate's pinned source commit.
+
+The validator also compares Git status before and after execution. A successful run must leave the working tree unchanged.
+
+**Machine-readable inputs:** [`contracts/registry.json`](https://github.com/matuteiglesias/kb-contracts/blob/main/contracts/registry.json), [`contracts/examples/`](https://github.com/matuteiglesias/kb-contracts/tree/main/contracts/examples), [`stable_references.v1.json`](https://github.com/matuteiglesias/kb-contracts/blob/main/contracts/test_vectors/stable_references.v1.json), and [`kb_interop_release.v1-rc1.json`](https://github.com/matuteiglesias/kb-contracts/blob/main/contracts/releases/kb_interop_release.v1-rc1.json).
 
 
 ## Profile-aware contract tests
@@ -58,15 +85,19 @@ A project that passes internal tests but fails these is treated as non integrate
 Profile-aware testing clarifies local usefulness versus integration readiness:
 
 - **Profile 0**: local schema smoke tests, stable ID tests, no cross-repo compliance claim
-- **Profile 1**: manifest + run record + declared seam + schema validation + smoke test
+- **Profile 1**: module descriptor + public knowledge schema + per-product knowledge artifact manifest + portable provenance + valid/invalid fixtures + declared seam + compatibility behavior + deterministic offline validation
 - **Profile 2**: full bus compliance tests for the claimed canonical role
 
 A project that only passes Profile 0 tests is usable locally but is not integrated across repos.
 A project claiming a bus role must pass the full relevant compliance tests.
 
+Producer-owned run records, bundle manifests, observability indexes, and failure records may be exercised by producer-local or future operational compliance tests. They are not prerequisites for a Knowledge Profile 1 claim.
+
 See [Contract profiles and promotion ladder](/docs/shared-conventions/contract-profiles-and-promotion-ladder).
 
-## Test catalog
+## Legacy and future test catalog
+
+> **Classification:** T001–T005 and T008–T009 are prose-era family or operational tests retained as migration guidance. They are not silently included in `kb-interop.v1-rc1`. T006 and T007 describe concepts now enforced more precisely by the current machine-readable gate above. A future schema or authority decision must explicitly promote any remaining test into a release.
 
 Each test includes:
 
@@ -75,7 +106,7 @@ Each test includes:
 - Inputs required
 - Pass conditions
 - Failure classification, mapping to the error taxonomy
-- Artifacts produced by the test run, including its own run record
+- Artifacts produced by the test run; operational evidence remains runner-owned
 
 ### T001 Event Bus JSONL schema validation
 
@@ -211,8 +242,8 @@ Failure classification:
 
 Validates:
 - Manifest schema
-- Required fields: schema version, counts, producer version, run id, hash fields
-- Hashing rules: correct algorithm and normalization assumptions
+- Required knowledge artifact fields: schema identity, artifact identity/family/kind, producer, portable payload reference, media type, byte size, provenance, integrity status, and checksum
+- Hashing rules: SHA-256 over exact finalized file bytes
 - Empty artifact rule: zero counts still manifested
 
 Inputs:
@@ -230,20 +261,24 @@ Failure classification:
 ### T007 Stable ID test vectors
 
 Validates:
-- stable id behavior matches frozen semantics
-- normalization and hashing rules are implemented consistently
+- registry-assigned module and producer IDs match the bounded lowercase grammar
+- producer-assigned source, record, artifact, and opaque run references preserve case and exact value
+- source IDs remain distinct from presentation slugs
+- aliases agree or fail on conflict
 
 Inputs:
-- The test vectors defined on the stable id page
-- A reference implementation or a CLI that outputs ids for given inputs
+- `contracts/test_vectors/stable_references.v1.json`
+- checked-in historical-reference fixtures
 
 Pass conditions:
-- All vectors match expected outputs exactly
+- All valid vectors preserve expected values exactly and all invalid vectors fail for the declared reason
 
 Failure classification:
-- Any mismatch is a contract break, treated as schema mismatch with mandatory ADR and version bump
+- Any case change, recomputation, alias conflict, or historical-ID change is a contract break requiring an ADR and schema version bump
 
 ### T008 Run record schema and error taxonomy compliance
+
+**Classification: candidate operational contract test.** T008 is retained as legacy shared guidance and is not part of Knowledge Interoperability Profile 1 or `kb-interop.v1-rc1`.
 
 Validates:
 - Run record schema fields
@@ -291,16 +326,14 @@ Failure classification:
 
 ## How these tests are run
 
-Minimum requirement:
+Current requirement:
 
-- A single command exists to run the ecosystem contract tests against a configured set of artifact roots.
-- The runner must not import any project internals.
-- The runner produces its own run record, including which projects were evaluated and pass or fail outcomes.
+- Run `npm run contract:validate` from a clean checkout.
+- Do not import producer internals or access the network.
+- Treat any generated or modified working-tree file as a validation failure.
+- Pin the release manifest and verify its source commit and checksums.
 
-Recommended:
-
-- CI workflow that runs these tests on any change to contract pages or schema definitions
-- Project level CI that runs the subset relevant to that project role
+Producer-local or future operational test runners may emit their own run records, but Knowledge Profile 1 does not require a universal runner evidence shape.
 
 ## What triggers a contract test update
 

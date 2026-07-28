@@ -5,6 +5,8 @@ sidebar_position: 70
 
 # Project runbook index
 
+> **Classification: producer-local pointer index.** Run commands, operational evidence, and run-record locations remain owned by producer repositories. This page is not part of the machine-readable knowledge-contract release.
+
 This page is a pointer registry.
 
 It exists to make day to day operation possible without turning this site into a clone of each repository README. If you want implementation details, debugging internals, or module inventories, go to the repo. If you want authoritative contracts, seams, and enforcement rules, stay here.

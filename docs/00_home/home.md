@@ -1,101 +1,45 @@
 ---
-title: Home
-sidebar_position: 2
+title: Knowledge contracts home
+sidebar_position: 1
 ---
 
-# Ecosystem Ops Manual
+# Knowledge interoperability, with a bounded authority
 
-This site is the **decision registry** and **contract catalog** for a multi repo pipeline ecosystem.
+KB Contracts publishes the small, machine-readable surface that knowledge producers and consumers share. It answers four questions:
 
-It exists to freeze the few things that must remain stable across repos so that integration stays cheap, runs stay reproducible, and drift stays visible.
+1. Which module is participating?
+2. Which knowledge product was finalized?
+3. Which schema and compatibility rules apply?
+4. Can another repository verify the product without importing producer internals?
 
-## What this site is
+The current release candidate is **`kb-interop.v1-rc1`**. It contains three Draft 2020-12 schemas, fixtures, stable-reference vectors, migration guidance, and an offline validator.
 
-A single authoritative reference for:
+## Start with the release, not the legacy prose
 
-- **Contracts**: schemas, invariants, required fields, allowed optional fields
-- **Buses and seams**: what each bus carries and the only allowed integration points
-- **On disk layouts**: canonical folder structures and naming rules
-- **Observability**: run record format, error taxonomy, and what must be recorded on every run
-- **Decisions**: ADRs that capture why a choice was made and what would justify changing it
+- [Current machine-readable release](./current-release.md)
+- [Knowledge Interoperability Profile 1](../03_shared-conventions/contract-profiles-and-promotion-ladder.md#profile-1--published-interop-artifact)
+- [Knowledge artifact manifest](../03_shared-conventions/manifests-and-integrity-rules.md#normative-knowledge-artifact-manifest-boundary)
+- [Compatibility and migration](../03_shared-conventions/knowledge-contract-compatibility.md)
+- [ADR-0006 authority boundary](../01_registry-governance/adr-0006-knowledge-interoperability-authority-boundary.md)
 
-If it is not stable, it does not belong here.
+## What is authoritative now
 
-## What this site is not
+| Surface | Authority |
+|---|---|
+| `contracts/registry.json` | Bootstrap registry for the schemas, profile, and release candidate |
+| `module.v1` | Participant identity, repository, accepted/emitted knowledge interfaces, validation, and release claim |
+| `knowledge_artifact_manifest.v1` | One finalized knowledge product, payload integrity, and portable knowledge provenance |
+| `knowledge_profile_claim.v1` | Machine-readable Knowledge Interoperability Profile 1 claim |
+| `stable_references.v1.json` | Preservation and bounded-grammar vectors; not a universal ID algorithm |
+| `kb_interop_release.v1-rc1.json` | Immutable source commit and exact-byte SHA-256 inventory |
+| `npm run contract:validate` | Deterministic, offline conformance gate |
 
-This site is not:
+## What is not a KB interoperability contract
 
-- Tutorials that will go stale
-- Implementation details tied to internal modules or refactors
-- Per repo README clones
-- A replacement for repo level runbooks and developer notes
-
-The code remains the source of truth for how a repo works internally. This site is the source of truth for how repos must interoperate.
+Run records, run bundles, lifecycle statuses, operational error taxonomies, environment capture, retries, staging, atomic promotion mechanics, and rollback remain producer-owned or candidate operational guidance. Existing pages are retained for context and migration, but their classification banners control how they may be used.
 
 ## The operating rule
 
-Every pipeline run must be explainable using only this site:
+For cross-repository knowledge exchange, publish a versioned public schema and one knowledge artifact manifest per promoted product. Preserve producer-assigned references exactly, use portable paths, pin the contract release, and pass the offline validator.
 
-- What inputs are allowed
-- What outputs must exist even if empty
-- What schema version is emitted
-- What run record will be written
-- What the smoke test is
-
-If a run cannot be explained using these pages, the ecosystem is missing a decision or a contract.
-
-## Stop the line policy
-
-Contracts are enforced at boundaries.
-
-If outputs violate contracts:
-
-- **Downstream consumers must fail fast**
-- The failure must be recorded in a run record
-- The system must not silently degrade or "best effort" its way forward
-
-This keeps bad artifacts from propagating downstream and turning into expensive rework.
-
-## Rule for updates
-
-Any change to a contract requires:
-
-1) An ADR explaining the change and its impact  
-2) A schema version bump  
-3) A minimal migration note describing:
-   - what changed
-   - how to detect affected artifacts
-   - what to regenerate or migrate
-
-If the change would break consumers without a version bump, it is not allowed.
-
-## How agents should use this site
-
-Agents must treat this site as authoritative.
-
-Rules:
-
-- Prefer reading contract pages over inspecting code
-- Never bypass seams by reading upstream raw inputs directly
-- When generating artifacts, emit required files even if empty, and record the run
-- When unsure, follow the contract pages first, then consult repo runbooks, then consult code
-
-## Day to day usage
-
-Use this site as a gate at the start and end of work:
-
-Before you run or modify anything:
-
-- Identify the bus and seam being used
-- Confirm allowed inputs and required outputs
-- Confirm the schema versions involved
-- Confirm the smoke test and run record expectations
-
-After a run:
-
-- Confirm required outputs exist
-- Validate schemas
-- Write or update the run record
-- If any contract is violated, stop and fix upstream before continuing
-
-This is how the ecosystem stays coherent while the internals keep evolving.
+Do not infer authority from an old Markdown field list. If prose conflicts with a registered schema or ADR-0006, the machine-readable release and ADR-0006 control.

@@ -4,8 +4,8 @@ import type {Config} from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
 
 const config: Config = {
-  title: 'KB Manual',
-  tagline: 'Decision registry and contract catalog for a multi repo pipeline ecosystem',
+  title: 'KB Contracts',
+  tagline: 'Machine-readable contracts for knowledge artifact interoperability',
   favicon: 'img/favicon.ico',
 
   future: {
@@ -18,7 +18,7 @@ const config: Config = {
 
   // Useful even if not using GitHub Pages
   organizationName: 'matuteiglesias',
-  projectName: 'kb-manual',
+  projectName: 'kb-contracts',
 
   onBrokenLinks: 'warn',
   onBrokenMarkdownLinks: 'warn',
@@ -35,8 +35,7 @@ const config: Config = {
         docs: {
           sidebarPath: './sidebars.ts',
           routeBasePath: 'docs',
-          // Change to your repo once created
-          editUrl: 'https://github.com/matuteiglesias/kb-manual/tree/main/',
+          editUrl: 'https://github.com/matuteiglesias/kb-contracts/tree/main/',
           showLastUpdateAuthor: true,
           showLastUpdateTime: true,
         },
@@ -56,28 +55,26 @@ const config: Config = {
     },
   
     navbar: {
-      title: 'KB Manual',
-      logo: { alt: 'KB Manual', src: 'img/logo.svg' },
+      title: 'KB Contracts',
+      logo: { alt: 'KB Contracts', src: 'img/logo.svg' },
       items: [
-        { type: 'doc', docId: 'intro', label: 'Start here', position: 'left' },
+        { type: 'doc', docId: 'home/current-release', label: 'Current release', position: 'left' },
   
         {
-          label: 'Hubs',
+          label: 'Authority',
           position: 'left',
           items: [
-            { label: 'Home', to: '/docs/home/home' },
-            { label: 'Ecosystem registry', to: '/docs/registry-governance/ecosystem-map-and-registry' },
-            { label: 'Glossary', to: '/docs/registry-governance/glossary' },
-            { label: 'Integration seams', to: '/docs/bus-contracts/integration-seams-and-allowed-io' },
-            { label: 'Run records', to: '/docs/shared-conventions/run-record-contract' },
-            { label: 'Observability indexes', to: '/docs/shared-conventions/observability-indexes-contract' },
-            { label: 'Snapshot publishing', to: '/docs/publishing/snapshot-publishing-contract' },
-            { label: 'Contract tests', to: '/docs/contract-tests/contract-compliance-tests' },
+            { label: 'Start here', to: '/docs/intro' },
+            { label: 'ADR-0006 boundary', to: '/docs/registry-governance/adr-0006-knowledge-interoperability-authority-boundary' },
+            { label: 'Knowledge Profile 1', to: '/docs/shared-conventions/contract-profiles-and-promotion-ladder' },
+            { label: 'Artifact manifest', to: '/docs/shared-conventions/manifests-and-integrity-rules' },
+            { label: 'Compatibility', to: '/docs/shared-conventions/knowledge-contract-compatibility' },
+            { label: 'Validation', to: '/docs/contract-tests/contract-compliance-tests' },
           ],
         },
   
         { type: 'docSidebar', sidebarId: 'tutorialSidebar', position: 'left', label: 'Manual' },
-        { href: 'https://github.com/matuteiglesias/kb-manual', label: 'GitHub', position: 'right' },
+        { href: 'https://github.com/matuteiglesias/kb-contracts', label: 'GitHub', position: 'right' },
       ],
     },
   
@@ -87,22 +84,20 @@ const config: Config = {
         {
           title: 'Navigate',
           items: [
+            { label: 'Current release', to: '/docs/home/current-release' },
             { label: 'Start here', to: '/docs/intro' },
-            { label: 'Home', to: '/docs/home/home' },
-            { label: 'Ecosystem registry', to: '/docs/registry-governance/ecosystem-map-and-registry' },
-            { label: 'Integration seams', to: '/docs/bus-contracts/integration-seams-and-allowed-io' },
-            { label: 'Observability indexes', to: '/docs/shared-conventions/observability-indexes-contract' },
-            { label: 'Glossary', to: '/docs/registry-governance/glossary' },
+            { label: 'Authority boundary', to: '/docs/registry-governance/adr-0006-knowledge-interoperability-authority-boundary' },
+            { label: 'Compatibility', to: '/docs/shared-conventions/knowledge-contract-compatibility' },
+            { label: 'Validation', to: '/docs/contract-tests/contract-compliance-tests' },
           ],
         },
         {
-          title: 'Contracts',
+          title: 'Knowledge interoperability',
           items: [
-            { label: 'Event Bus', to: '/docs/bus-contracts/event-bus-contract' },
-            { label: 'Sessions Bus', to: '/docs/bus-contracts/sessions-bus-contract' },
-            { label: 'Summary Bus', to: '/docs/bus-contracts/summary-bus-contract' },
-            { label: 'Manifests', to: '/docs/shared-conventions/manifests-and-integrity-rules' },
-            { label: 'Run records', to: '/docs/shared-conventions/run-record-contract' },
+            { label: 'Profile 1', to: '/docs/shared-conventions/contract-profiles-and-promotion-ladder' },
+            { label: 'Artifact manifest', to: '/docs/shared-conventions/manifests-and-integrity-rules' },
+            { label: 'Stable references', to: '/docs/shared-conventions/stable-ids-and-naming-rules' },
+            { label: 'Legacy family catalog', to: '/docs/category/legacy-family-contracts-and-seams' },
           ],
         },
       ],

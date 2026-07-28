@@ -5,7 +5,9 @@ sidebar_position: 12
 
 # Summary Bus contract
 
-Contract for deterministic summaries with strict provenance.
+> **Classification: legacy family contract / migration source.** Summary semantics and provenance concepts remain useful producer guidance, but these prose field lists are not registered schemas in `kb-interop.v1-rc1`. A promoted product needs its own registered public schema and knowledge artifact manifest.
+
+Legacy family guidance for deterministic summaries with strict provenance.
 
 ## Purpose
 

@@ -5,6 +5,8 @@ sidebar_position: 30
 
 # Contract profiles and promotion ladder
 
+> **Authority note:** this page now governs **knowledge interoperability profiles** only. Operational evidence such as run records, bundle manifests, lifecycle status, retries, and environment capture remains producer-owned pending a separate operational-evidence authority. See ADR-0006.
+
 This page defines a profile model for adoption sequencing without weakening canonical contracts.
 
 It is aligned with:
@@ -49,6 +51,8 @@ Example:
 
 ## Profile 1 — Published interop artifact
 
+**Machine-readable authority:** [`contracts/schemas/knowledge_profile_claim.v1.schema.json`](https://github.com/matuteiglesias/kb-contracts/blob/main/contracts/schemas/knowledge_profile_claim.v1.schema.json), with a checked-in [valid claim](https://github.com/matuteiglesias/kb-contracts/blob/main/contracts/examples/valid/knowledge_profile_claim.v1.json). Module requirements are enforced by [`module.v1.schema.json`](https://github.com/matuteiglesias/kb-contracts/blob/main/contracts/schemas/module.v1.schema.json).
+
 Purpose:
 
 - Safe for one or more other repos to consume through an explicit seam.
@@ -56,14 +60,22 @@ Purpose:
 
 Rules:
 
-- Must have `schema_version`.
-- Must have manifest.
-- Must have run record.
-- Must have stable IDs.
+- Must provide a versioned module descriptor.
+- Must publish one or more versioned public knowledge-artifact schemas.
+- Must have stable, opaque public artifact and source identifiers.
+- Must have a `knowledge_artifact_manifest.v1` for every promoted public product.
+- Must provide artifact-level checksum and portable provenance.
 - Must define allowed readers and declared seam.
-- Must define required smoke/contract tests.
+- Must check in valid and invalid fixtures.
+- Must expose one deterministic offline validation command.
+- Must state explicit compatibility behavior.
+- Must not depend directly on another repository's undeclared internals.
 - Optional fields may remain optional if documented.
 - Consumers must validate schema version before processing.
+
+Optional producer-owned operational evidence may include a run record, bundle manifest, observability index, publication report, or failure record. Such evidence improves operational maturity but is not required by Knowledge Interoperability Profile 1, and references to it remain opaque.
+
+The exact gate is `npm run contract:validate`; prose-only examples on older bus pages do not add fields to this profile.
 
 Example:
 
@@ -80,7 +92,7 @@ Rules:
 
 - Must satisfy the relevant bus contract fully.
 - Must pass compliance tests.
-- Must satisfy manifest and run record requirements.
+- Must satisfy the relevant knowledge artifact manifest and provenance requirements.
 - Must obey integration seam and allowed IO rules.
 - Must include full required provenance/integrity fields for the bus family.
 - Must preserve sanctioned bus flow and adapter boundaries.
@@ -95,7 +107,7 @@ A repo may freely use Profile 0 internally, but crossing repo boundaries require
 
 If an artifact is reused by another repo, the producer must either:
 
-- promote it to Profile 1 with manifest + run record + explicit seam, or
+- promote it to Profile 1 with a knowledge artifact manifest, fixtures, validation, compatibility policy, and explicit seam, or
 - export it through an adapter that emits a Profile 1 or Profile 2 artifact.
 
 Unapproved wiring remains forbidden. If a needed seam does not exist, add the minimal adapter and update contract docs before integration.
@@ -110,7 +122,7 @@ Unapproved wiring remains forbidden. If a needed seam does not exist, add the mi
 - `paper-kb` review CSV or `review_node`
   - Profile 1
   - consumed by `abstract-scroller`
-  - must have explicit schema and run evidence
+  - must have an explicit knowledge schema, per-product manifest, fixtures, portable provenance, and offline validation
 
 - canonical Chunk Bus export
   - Profile 2
@@ -125,7 +137,7 @@ Unapproved wiring remains forbidden. If a needed seam does not exist, add the mi
 - `paper-kb` Summary Bus export
   - Profile 1 or Profile 2 depending on scope and claims
   - emitted by an adapter such as `export_summary_bus`
-  - must satisfy Summary Bus contract, manifest, run record, and tests at claimed level
+  - must satisfy the knowledge-artifact schema, manifest, provenance, seam, and tests at the claimed level; producer-local run evidence is optional at Profile 1
 
 ## Boundary reminders
 
