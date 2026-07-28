@@ -5,7 +5,9 @@ sidebar_position: 10
 
 # Event Bus contract
 
-Authoritative contract for atomic message events.
+> **Classification: legacy family contract / migration source.** Event semantics remain useful producer guidance, but this prose field list is not a registered schema in `kb-interop.v1-rc1`. Do not infer machine-readable authority from this page.
+
+Historically authoritative producer guidance for atomic message events.
 
 ## Purpose
 

@@ -1,1 +1,1 @@
-{ "label": "Bus contracts and seams", "position": 20, "link": { "type": "generated-index" } }
+{ "label": "Legacy family contracts and seams", "position": 40, "link": { "type": "generated-index", "description": "Prose-era bus contracts retained as migration sources; only registered schemas are machine-readable release authority." } }

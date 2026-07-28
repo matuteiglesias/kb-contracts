@@ -1,9 +1,11 @@
 ---
-title: Run record contract
+title: Run records (operational guidance)
 sidebar_position: 33
 ---
 
 # Run record contract
+
+> **Authority classification: candidate operational contract / legacy shared guidance.** This page does not define a normative schema in the KB knowledge-interoperability release. Producer repositories retain their current run-record shapes until a separate operational-evidence authority is approved. Knowledge contracts may carry opaque `run_id` or `run_record_ref` values without importing this shape. See ADR-0006.
 
 Run records unify observability across the ecosystem and let automation reason over pipelines consistently.
 

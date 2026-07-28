@@ -5,6 +5,8 @@ sidebar_position: 50
 
 # Quartz or site consumer interface
 
+> **Classification: knowledge-consumer guidance.** Reading declared published seams rather than repository internals supports Profile 1. Site build, mapping, and publication mechanics remain consumer-owned and are not schemas in `kb-interop.v1-rc1`.
+
 This page defines the **consumer interface** for turning published artifacts into a website without tight coupling.
 
 The consumer is a site builder, for example Quartz, Docusaurus, or any static site pipeline. The consumer must treat published outputs as immutable inputs and must not depend on upstream repo internals.

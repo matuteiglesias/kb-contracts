@@ -5,6 +5,8 @@ sidebar_position: 15
 
 # Integration seams and allowed IO
 
+> **Classification: knowledge-seam guidance.** The prohibition on undeclared repository-internal dependencies supports Knowledge Profile 1. Named project layouts, run behavior, and operational fail-fast rules remain legacy or producer-local unless represented in the current machine-readable release.
+
 This page is the enforcement reference for wiring repos together. If a new wiring choice is not explicitly allowed here, treat it as forbidden until an adapter and a contract update exist.
 
 ## What this page governs

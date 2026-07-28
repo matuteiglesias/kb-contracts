@@ -5,6 +5,26 @@ sidebar_position: 31
 
 # Stable IDs and naming rules
 
+> **Authority classification:** the universal derivation and hash guidance on this page is legacy shared guidance and a possible producer-local reference, not a required algorithm in KB interoperability v1. The normative v1 shared rule is explicit reference preservation below. Producer-owned versioned contracts retain authority over source, record, artifact, and fallback-hash derivation. See ADR-0006.
+
+## Normative shared-reference rules for KB interoperability v1
+
+- Module and producer IDs are lowercase, registry-assigned values matching `[a-z0-9][a-z0-9._-]{0,127}`.
+- Source, record, and artifact IDs are producer-assigned, opaque to generic consumers, case-preserving, and stable once published.
+- Generic consumers must not lowercase, recompute, infer from filenames, or derive these IDs from display names.
+- Run IDs are outside KB Contracts authority. When referenced, they remain opaque, case-preserved producer-native references.
+- Slugs are presentation and routing identifiers, not stable source identity. `source_id` and `published_slug` remain distinct.
+- A hash-derived fallback is allowed only when a producer's own versioned contract fixes its inputs, ordering, serialization, normalization, algorithm, prefix, and output length.
+- Historical IDs are never renamed or recomputed merely to satisfy a newer release.
+
+The machine-readable v1 vectors freeze grammar, preservation, alias conflicts, source-ID/slug distinction, and unchanged historical IDs. They deliberately do not freeze a universal computed hash algorithm.
+
+**Machine-readable authority:** [`contracts/test_vectors/stable_references.v1.json`](https://github.com/matuteiglesias/kb-contracts/blob/main/contracts/test_vectors/stable_references.v1.json). The validator runs these vectors exactly as checked in.
+
+## Legacy universal stable-ID derivation guidance
+
+> **Deprecated as a universal algorithm.** The material below is retained for producer migration and for any producer contract that deliberately adopts it. `kb-interop.v1-rc1` does not require its normalization, concatenation, hashing, prefix, or truncation rules, and the placeholder computed hashes below are not release vectors.
+
 This page freezes naming semantics so IDs do not drift across repos, refactors, or reruns.
 
 It is a behavioral contract only. It does not contain an implementation.

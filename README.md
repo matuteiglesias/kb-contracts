@@ -1,76 +1,42 @@
-# KB Manual
+# KB Contracts
 
-A decision registry and contract catalog for a multi repo knowledge pipeline ecosystem.
+Machine-readable contracts for knowledge-artifact interoperability across repositories.
 
-This repo exists to prevent integration drift in systems that combine LLM workflows, knowledge management, and data pipelines. It defines the stable seams between projects: buses, schemas, manifests, run records, publishing contracts, and the rules for how repos are allowed to read and write data.
+## Current release candidate
 
-## What this is
+`kb-interop.v1-rc1` contains:
 
-- A decision registry: the “why” behind architectural choices, frozen as ADRs.
-- A contract catalog: authoritative specs for buses and shared conventions.
-- An enforcement reference: the page you consult before wiring two repos together.
+- `kb.module@1.0`
+- `kb.knowledge_artifact_manifest@1.0`
+- `kb.knowledge_profile_claim@1.0`
+- valid, invalid, and compatibility fixtures
+- stable-reference preservation vectors
+- an immutable release manifest with a pinned source commit and SHA-256 inventory
 
-## Operating rule
+Validate the complete release offline:
 
-Every pipeline run must be explainable using only this manual:
+```bash
+npm ci
+npm run contract:validate
+```
 
-- allowed inputs
-- required outputs, even if empty
-- schema versions emitted
-- where the run record is written
-- the smoke test command
+Start with [`docs/00_home/current-release.md`](docs/00_home/current-release.md) and [ADR-0006](docs/01_registry-governance/adr-0006-knowledge-interoperability-authority-boundary.md).
 
-If you cannot explain a run using only this repo, the system is not integrated yet.
+RC1 has one documented adoption gap: it cannot yet declare producer-owned domain schemas using a repository, source commit, relative schema path, and exact-byte hash. The recommended next-RC protocol is documented in [`docs/00_home/producer-owned-schemas.md`](docs/00_home/producer-owned-schemas.md). Producers should retain ownership rather than copy domain schemas into this repository.
 
+## Authority boundary
 
-## How agents should use this repo
+This repository owns shared knowledge artifact identity, schemas, artifact-level integrity and provenance, module descriptors, knowledge compatibility, interoperability profiles, fixtures, and machine-readable releases.
 
-Treat this manual as authoritative.
+It does **not** own a universal execution architecture. Run records, run bundles, lifecycle statuses, operational errors, environment capture, retries, staging, atomic promotion mechanics, rollback, and orchestration remain producer-owned or candidate operational guidance.
 
-- Prefer reading contract pages over inspecting code.
-- Never bypass seams by reading upstream raw inputs directly.
-- If a cross family move is needed, do it via an adapter that emits a bus compliant artifact.
+Legacy bus, publishing, storage, runbook, and observability pages are retained for migration context. Their classification banners state whether a page is current knowledge guidance, a legacy family contract, producer-local guidance, or a candidate operational contract. Registered schemas and the pinned release take precedence over prose field lists.
 
-## Contents
-
-The site is organized around a small number of stable concepts:
-
-- Registry and governance layer
-  - ecosystem map and registry
-  - ADR index and policy
-  - glossary
-
-- Bus contracts and seams
-  - event bus contract
-  - sessions bus contract
-  - summary bus contract
-  - digest bus contract
-  - chunk bus contract
-  - integration seams and allowed IO
-
-- Shared conventions
-  - stable IDs and naming rules
-  - manifests and integrity rules
-  - run record contract
-  - error taxonomy and stop rules
-
-- Publishing contract and consumers
-  - snapshot publishing contract
-  - consumer interface rules
-
-- Storage boundaries and adapters
-  - adapter policy and version drift strategy
-
-- Minimal runbooks index
-  - links to per repo runbooks without duplicating them
-
-- Contract compliance tests
-  - cross repo tests for contract correctness
-
-## Local development
-
-This repo is a Docusaurus site.
+## Local documentation
 
 ```bash
 npm install
 npm run start
+```
+
+The documentation landing page emphasizes the current release, adoption path, compatibility rules, and authority boundary.
