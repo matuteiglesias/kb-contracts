@@ -29,8 +29,6 @@ The checked-in optional-extension compatibility case proves that both the base d
 
 Historical artifacts remain valid under their declared historical schemas. They are not rewritten merely to satisfy the current release.
 
-For a future producer-owned schema declaration, the producer owns version and semantic decisions while KB Contracts owns declaration and verification behavior. A commit-pin change with byte-identical schema content need not force a schema-version bump; identity, meaning, checksum semantics, or bytes changing under the same claimed hash is not allowed. See [Producer-owned schemas (next RC)](/docs/home/producer-owned-schemas).
-
 ## Aliases
 
 Every compatibility alias must declare:

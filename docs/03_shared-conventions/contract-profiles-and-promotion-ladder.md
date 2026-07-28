@@ -53,8 +53,6 @@ Example:
 
 **Machine-readable authority:** [`contracts/schemas/knowledge_profile_claim.v1.schema.json`](https://github.com/matuteiglesias/kb-contracts/blob/main/contracts/schemas/knowledge_profile_claim.v1.schema.json), with a checked-in [valid claim](https://github.com/matuteiglesias/kb-contracts/blob/main/contracts/examples/valid/knowledge_profile_claim.v1.json). Module requirements are enforced by [`module.v1.schema.json`](https://github.com/matuteiglesias/kb-contracts/blob/main/contracts/schemas/module.v1.schema.json).
 
-> **RC1 adoption gap:** the current validator resolves `public_schemas` only through the KB Contracts registry. Producer-owned schemas cannot yet be declared with an independently verifiable repository/commit/path/hash tuple. Do not copy producer schema content into KB Contracts or force a KB-owned binding as a workaround. See [Producer-owned schemas (next RC)](/docs/home/producer-owned-schemas).
-
 Purpose:
 
 - Safe for one or more other repos to consume through an explicit seam.
