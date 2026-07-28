@@ -145,3 +145,19 @@ Each slice must pass `npm run build`, `git diff --check`, and all available cont
 ## Implementation readiness
 
 The pruned contracts infrastructure may proceed after this documentation change is reviewed. Universal operational contracts remain blocked until a separate authority is deliberately established. The release candidate itself remains subject to Matías's release approval.
+
+## Next-RC adoption work: producer-owned schemas
+
+RC1 can advertise only schemas resolved through its own closed registry. A future release should let producers own domain schemas while KB Contracts governs a verifiable declaration protocol.
+
+The proposed declaration contains:
+
+- producer-owned `schema_id` and `schema_version`;
+- repository-relative `schema_ref`;
+- canonical `repository` ID;
+- full `source_commit`; and
+- exact-byte SHA-256.
+
+Before implementation, the next release must decide the repository registry, acquisition-versus-offline-validation boundary, declaration schema identity, module/profile integration, and historical declaration retention. It must add positive and negative fixtures for repository resolution, commit/path safety, checksums, schema identity, module claims, and historical versions.
+
+Do not modify `kb-interop.v1-rc1` or bind Context Routing to a KB-owned domain schema to close this gap. Implement it as a new immutable release candidate after approval. The detailed proposal is in `docs/00_home/producer-owned-schemas.md`.

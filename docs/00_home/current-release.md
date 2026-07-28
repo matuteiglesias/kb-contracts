@@ -44,6 +44,12 @@ The release contains only:
 
 It contains no run-record, run-bundle, operational-error, lifecycle, promotion, runtime-library, or MCP schema.
 
+## Known adoption gap: producer-owned schemas
+
+RC1 resolves Profile 1 `public_schemas` through the KB Contracts registry. It does not yet provide a standard declaration that pins a producer-owned schema by repository, source commit, repository-relative path, and exact-byte SHA-256.
+
+The recommended next-RC design is documented in [Producer-owned, independently verifiable schemas](./producer-owned-schemas.md). Until that protocol is approved and released, producers retain their schema authority and should not copy domain schemas into KB Contracts or force a KB-owned binding merely to satisfy RC1.
+
 ## Reading precedence
 
 1. The pinned release manifest and its checksum inventory.

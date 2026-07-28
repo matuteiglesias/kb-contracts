@@ -20,6 +20,7 @@ The current release candidate is **`kb-interop.v1-rc1`**. It contains three Draf
 - [Knowledge Interoperability Profile 1](../03_shared-conventions/contract-profiles-and-promotion-ladder.md#profile-1--published-interop-artifact)
 - [Knowledge artifact manifest](../03_shared-conventions/manifests-and-integrity-rules.md#normative-knowledge-artifact-manifest-boundary)
 - [Compatibility and migration](../03_shared-conventions/knowledge-contract-compatibility.md)
+- [Producer-owned schemas: next-RC adoption gap](./producer-owned-schemas.md)
 - [ADR-0006 authority boundary](../01_registry-governance/adr-0006-knowledge-interoperability-authority-boundary.md)
 
 ## What is authoritative now

@@ -69,6 +69,7 @@ const config: Config = {
             { label: 'Knowledge Profile 1', to: '/docs/shared-conventions/contract-profiles-and-promotion-ladder' },
             { label: 'Artifact manifest', to: '/docs/shared-conventions/manifests-and-integrity-rules' },
             { label: 'Compatibility', to: '/docs/shared-conventions/knowledge-contract-compatibility' },
+            { label: 'Producer-owned schemas (next RC)', to: '/docs/home/producer-owned-schemas' },
             { label: 'Validation', to: '/docs/contract-tests/contract-compliance-tests' },
           ],
         },

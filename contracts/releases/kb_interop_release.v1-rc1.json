@@ -4,7 +4,7 @@
   "release_id": "kb-interop.v1-rc1",
   "status": "release_candidate",
   "released_at": "2026-07-28T00:00:00Z",
-  "source_commit": "10fcfa001f93fd222f96ee9d37f5428104791156",
+  "source_commit": "31431d076c6c612f29e204105751738523293a4a",
   "schemas": [
     {
       "schema_id": "kb.module",

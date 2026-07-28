@@ -22,6 +22,8 @@ npm run contract:validate
 
 Start with [`docs/00_home/current-release.md`](docs/00_home/current-release.md) and [ADR-0006](docs/01_registry-governance/adr-0006-knowledge-interoperability-authority-boundary.md).
 
+RC1 has one documented adoption gap: it cannot yet declare producer-owned domain schemas using a repository, source commit, relative schema path, and exact-byte hash. The recommended next-RC protocol is documented in [`docs/00_home/producer-owned-schemas.md`](docs/00_home/producer-owned-schemas.md). Producers should retain ownership rather than copy domain schemas into this repository.
+
 ## Authority boundary
 
 This repository owns shared knowledge artifact identity, schemas, artifact-level integrity and provenance, module descriptors, knowledge compatibility, interoperability profiles, fixtures, and machine-readable releases.
