@@ -5,7 +5,9 @@ sidebar_position: 14
 
 # Chunk Bus contract
 
-The Chunk Bus is the canonical contract for document chunks. It is independent from chat events and sessions. It is also the canonical upstream for document-oriented summaries emitted to Summary Bus through the Summary Request Seam.
+> **Classification: legacy family contract / migration source.** Chunk semantics remain useful producer guidance, but this prose field list is not a registered schema in `kb-interop.v1-rc1`. Cross-repository products must use a registered public schema, Knowledge Profile 1, and `knowledge_artifact_manifest.v1`.
+
+Historically, the Chunk Bus served as the canonical prose contract for document chunks. It is independent from chat events and sessions. It is also the canonical upstream for document-oriented summaries emitted to Summary Bus through the Summary Request Seam.
 
 > Profile note: Canonical Chunk Bus requirements apply when a repo claims the Chunk Bus producer role or exposes chunks as a cross-repo bus endpoint. Repos may maintain lighter local chunk artifacts under Profile 0, but those artifacts are private unless promoted through an adapter that emits a compliant interop or canonical bus artifact. See [Contract profiles and promotion ladder](/docs/shared-conventions/contract-profiles-and-promotion-ladder).
 

@@ -1,7 +1,9 @@
 ---
-title: Observability indexes contract
+title: Observability indexes (operational guidance)
 sidebar_position: 35
 ---
+
+> **Classification: candidate operational contract / legacy shared guidance.** Observability indexes, UI run status, and rebuild operations are outside `kb-interop.v1-rc1`. Producers may retain these shapes locally; Knowledge Profile 1 does not require them.
 
 ## Purpose
 

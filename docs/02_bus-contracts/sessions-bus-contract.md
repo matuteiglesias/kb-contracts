@@ -5,11 +5,13 @@ sidebar_position: 11
 
 # Sessions Bus contract
 
+> **Classification: legacy family contract / migration source.** Session and cluster semantics remain useful producer guidance, but these prose field lists are not registered schemas in `kb-interop.v1-rc1`. Operational run and failure rules remain producer-owned.
+
 Contract for session objects and cluster outputs.
 
 ## Purpose
 
-The Sessions Bus is the canonical stream of session objects derived from Event Bus events, plus the cluster outputs produced from those sessions.
+Historically, the Sessions Bus was defined as the canonical stream of session objects derived from Event Bus events, plus the cluster outputs produced from those sessions.
 
 This page defines the session object schema, the cluster output schema, on-disk layout, manifests, invariants, compatibility rules, smoke test expectations, and failure modes.
 

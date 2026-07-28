@@ -5,6 +5,8 @@ sidebar_position: 40
 
 # Snapshot publishing contract
 
+> **Classification: legacy knowledge-family contract with operational guidance.** Snapshot product semantics may inform a producer-owned public schema, but this prose field list is not registered in `kb-interop.v1-rc1`; staging and atomic publication mechanics remain operational.
+
 This page defines **snapshot publishing** as a formal artifact type.
 
 A snapshot is a deterministic, static publish output optimized for consumption by downstream tools and frontends. It is designed to be browsable, cacheable, and verifiable, while remaining cheap to regenerate.

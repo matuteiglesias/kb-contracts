@@ -5,6 +5,8 @@ sidebar_position: 60
 
 # Storage boundaries and adapter policy
 
+> **Classification: producer-local implementation guidance.** Storage engines, adapters, migrations, and persistence lifecycle are outside the knowledge-interoperability release. No storage schema or runtime library is standardized by `kb-interop.v1-rc1`.
+
 This page freezes the storage rules that keep the ecosystem stable over time.
 
 Storage is a source of hidden coupling. Version drift, schema drift, and inconsistent persistence patterns create failures that are expensive to diagnose and easy to repeat. The goal of this policy is to define a small set of **allowed storage types** and enforce a strict **adapter boundary** so that each project can evolve without re learning the same storage failures.

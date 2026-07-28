@@ -1,9 +1,11 @@
 ---
-title: Summary Request Seam
+title: Summary Request Seam (operational candidate)
 sidebar_position: 16
 ---
 
 # Summary Request Seam
+
+> **Classification: candidate operational seam / producer-local reference.** Request orchestration is outside the ADR-0006 knowledge-interoperability authority. This page is retained for migration context and does not define a schema in `kb-interop.v1-rc1`.
 
 > Profile note: Local product applications may expose direct summary-generation actions for interactive use. These shortcuts are Profile 0 or Profile 1 product APIs, not Summary Bus producers unless they emit Summary Bus artifacts. In bus mode, document summarization should enter through the Summary Request Seam and publish to Summary Bus. See [Contract profiles and promotion ladder](/docs/shared-conventions/contract-profiles-and-promotion-ladder).
 

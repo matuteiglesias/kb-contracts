@@ -1,9 +1,11 @@
 ---
-title: Error taxonomy and stop rules
+title: Error taxonomy (operational guidance)
 sidebar_position: 34
 ---
 
 # Error taxonomy and stop rules
+
+> **Authority classification: candidate operational contract / legacy shared guidance.** These classifications and stop rules remain useful pipeline guidance, but they are not universal requirements of the KB knowledge-interoperability release. Producers retain local operational error and lifecycle contracts pending a separate operational-evidence authority. See ADR-0006.
 
 This page standardizes how failures are classified across repos and how they propagate through the ecosystem.
 
