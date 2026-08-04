@@ -1,0 +1,46 @@
+# This file declares the repository boundary and its place in the GitHub estate.
+schema_version: 1
+id: kb.contracts.registry
+repository:
+  id: repo.kb-contracts
+  github: matuteiglesias/kb-contracts
+domain: knowledge
+system: kb.contracts
+role: contract-registry
+lifecycle: active
+authority:
+  status: proposed
+  owns:
+  - shared knowledge artifact schemas and compatibility rules
+  - offline validation semantics for shared contracts
+  does_not_own:
+  - producer orchestration
+  - retries, staging, rollback, or producer-local lifecycle
+  - domain-specific execution semantics
+interfaces:
+  consumes: []
+  produces:
+  - contract:kb.chunk-set@1
+  - contract:kb.review-node@1
+  - contract:kb.run-manifest@1
+  - contract:kb.selected-evidence@1
+upstream: []
+downstream:
+- repo.context
+- repo.gpt-digests
+- repo.knowledge-base-app
+- repo.knowledge-inspect
+- repo.matias-context-mcp
+canonical_commands: []
+generated_paths:
+- dist/
+- schemas/
+verification:
+  status: metadata-only
+  last_verified: '2026-08-04'
+  command: null
+  unknowns:
+  - canonical validation command requires local confirmation
+maintenance:
+  cadence: quarterly
+  next_review: '2026-11-01'
