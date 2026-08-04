@@ -31,16 +31,19 @@ downstream:
 - repo.knowledge-base-app
 - repo.knowledge-inspect
 - repo.matias-context-mcp
-canonical_commands: []
+canonical_commands:
+- make check
+- make docs
+- make run
 generated_paths:
 - dist/
 - schemas/
 verification:
-  status: metadata-only
+  status: partial
   last_verified: '2026-08-04'
-  command: null
+  command: make check
   unknowns:
-  - canonical validation command requires local confirmation
+  - Make targets and native npm commands require execution from a local checkout with dependencies installed
 maintenance:
   cadence: quarterly
   next_review: '2026-11-01'
