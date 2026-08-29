@@ -60,8 +60,6 @@ jobs:
 
               if mismatches:
                   print(f'{candidate}: MISMATCH ({len(mismatches)})')
-                  for item in mismatches[:8]:
-                      print(f'  - {item}')
               else:
                   print(f'{candidate}: EXACT INVENTORY MATCH')
                   exact.append(candidate)
@@ -69,3 +67,14 @@ jobs:
           if not exact:
               raise SystemExit('No reachable candidate reproduces the RC1 inventory exactly')
           print('exact_matches=' + ','.join(exact))
+
+      - name: Test local replacement of missing historical source commit
+        shell: bash
+        run: |
+          set -euxo pipefail
+          OLD=31431d076c6c612f29e204105751738523293a4a
+          NEW=4a42504b7fad04e0a4dee0fd6a8be24a5e95b978
+          git update-ref "refs/replace/$OLD" "$NEW"
+          git cat-file -e "$OLD^{commit}"
+          test "$(git show "$OLD:contracts/registry.json" | sha256sum | cut -d' ' -f1)" = "$(git show "$NEW:contracts/registry.json" | sha256sum | cut -d' ' -f1)"
+          git update-ref -d "refs/replace/$OLD"
