@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 'use strict';
 
+const crypto = require('node:crypto');
 const fs = require('node:fs');
 const path = require('node:path');
 const {spawnSync, execFileSync} = require('node:child_process');
@@ -21,10 +22,31 @@ function commitExists(sha) {
   return result.status === 0;
 }
 
+function gitStatus() {
+  return execFileSync('git', ['status', '--porcelain=v1', '--untracked-files=all'], {
+    cwd: root,
+    encoding: 'utf8',
+  });
+}
+
+function proveInventoryEquivalent(release, replacementCommit) {
+  for (const entry of release.files) {
+    const committed = execFileSync('git', ['show', `${replacementCommit}:${entry.path}`], {cwd: root});
+    const digest = crypto.createHash('sha256').update(committed).digest('hex');
+    if (digest !== entry.sha256) {
+      throw new Error(
+        `provenance replacement ${replacementCommit} disagrees with RC1 inventory at ${entry.path}`
+      );
+    }
+  }
+}
+
 function main() {
-  const release = readJson(releasePath);
+  const originalBytes = fs.readFileSync(releasePath);
+  const release = JSON.parse(originalBytes.toString('utf8'));
   const sourceCommit = release.source_commit;
-  let replacementRef = null;
+  const statusBefore = gitStatus();
+  let substituted = false;
 
   try {
     if (!commitExists(sourceCommit)) {
@@ -41,16 +63,16 @@ function main() {
         throw new Error(`provenance replacement commit ${repair.equivalent_reachable_commit} is also unreachable`);
       }
 
-      replacementRef = `refs/replace/${sourceCommit}`;
-      execFileSync('git', ['update-ref', replacementRef, repair.equivalent_reachable_commit], {cwd: root});
+      proveInventoryEquivalent(release, repair.equivalent_reachable_commit);
       process.stderr.write(
         `Applying governed provenance repair for ${release.release_id}: ` +
-        `${sourceCommit} -> ${repair.equivalent_reachable_commit}\n`
+        `${sourceCommit} -> ${repair.equivalent_reachable_commit} ` +
+        `(exact inventory equivalence proven)\n`
       );
 
-      if (!commitExists(sourceCommit)) {
-        throw new Error('Git replacement did not make the declared source commit resolvable');
-      }
+      const repairedRelease = {...release, source_commit: repair.equivalent_reachable_commit};
+      fs.writeFileSync(releasePath, `${JSON.stringify(repairedRelease, null, 2)}\n`, 'utf8');
+      substituted = true;
     }
 
     const result = spawnSync(process.execPath, ['scripts/validate-contracts.cjs'], {
@@ -60,13 +82,10 @@ function main() {
     if (result.error) throw result.error;
     process.exitCode = result.status ?? 1;
   } finally {
-    if (replacementRef) {
-      try {
-        execFileSync('git', ['update-ref', '-d', replacementRef], {cwd: root});
-      } catch (error) {
-        process.stderr.write(`warning: unable to remove temporary provenance replacement: ${error.message}\n`);
-        process.exitCode = process.exitCode || 1;
-      }
+    if (substituted) fs.writeFileSync(releasePath, originalBytes);
+    if (gitStatus() !== statusBefore) {
+      process.stderr.write('contract validation entrypoint failed: provenance repair did not restore the working tree\n');
+      process.exitCode = 1;
     }
   }
 }
