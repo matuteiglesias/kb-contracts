@@ -1,0 +1,71 @@
+name: W4 RC1 provenance probe
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - '.github/workflows/w4-rc1-provenance-probe.yml'
+      - 'contracts/releases/kb_interop_release.v1-rc1.json'
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Compare reachable release candidates to RC1 inventory
+        shell: python
+        run: |
+          import hashlib
+          import json
+          import subprocess
+          from pathlib import Path
+
+          release = json.loads(Path('contracts/releases/kb_interop_release.v1-rc1.json').read_text())
+          candidates = [
+              '4a42504b7fad04e0a4dee0fd6a8be24a5e95b978',
+              '5e2597e1b88168da57ed50f04c72e1ebab3554b5',
+              '33f8c5ebf2492cfb68fe3177adf10f749e1b8aa6',
+              'e86dff79af80d736d38a22ce94881ab7618c800e',
+          ]
+
+          exact = []
+          for candidate in candidates:
+              exists = subprocess.run(
+                  ['git', 'cat-file', '-e', f'{candidate}^{{commit}}'],
+                  stdout=subprocess.DEVNULL,
+                  stderr=subprocess.DEVNULL,
+              ).returncode == 0
+              if not exists:
+                  print(f'{candidate}: UNREACHABLE')
+                  continue
+
+              mismatches = []
+              for entry in release['files']:
+                  proc = subprocess.run(
+                      ['git', 'show', f"{candidate}:{entry['path']}"],
+                      stdout=subprocess.PIPE,
+                      stderr=subprocess.DEVNULL,
+                  )
+                  if proc.returncode != 0:
+                      mismatches.append(f"{entry['path']}:missing")
+                      continue
+                  digest = hashlib.sha256(proc.stdout).hexdigest()
+                  if digest != entry['sha256']:
+                      mismatches.append(f"{entry['path']}:{digest[:12]}")
+
+              if mismatches:
+                  print(f'{candidate}: MISMATCH ({len(mismatches)})')
+                  for item in mismatches[:8]:
+                      print(f'  - {item}')
+              else:
+                  print(f'{candidate}: EXACT INVENTORY MATCH')
+                  exact.append(candidate)
+
+          if not exact:
+              raise SystemExit('No reachable candidate reproduces the RC1 inventory exactly')
+          print('exact_matches=' + ','.join(exact))
