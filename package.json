@@ -13,7 +13,7 @@
     "write-translations": "docusaurus write-translations",
     "write-heading-ids": "docusaurus write-heading-ids",
     "typecheck": "tsc",
-    "contract:validate": "node scripts/validate-contracts.cjs"
+    "contract:validate": "node scripts/validate-contracts-entry.cjs"
   },
   "dependencies": {
     "@docusaurus/core": "3.9.2",
