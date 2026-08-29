@@ -1,0 +1,13 @@
+{
+  "schema_id": "kb.release_provenance_repairs",
+  "schema_version": "1.0",
+  "repairs": [
+    {
+      "release_id": "kb-interop.v1-rc1",
+      "declared_source_commit": "31431d076c6c612f29e204105751738523293a4a",
+      "equivalent_reachable_commit": "4a42504b7fad04e0a4dee0fd6a8be24a5e95b978",
+      "reason": "The original pre-merge source object is no longer reachable from repository history. W4 CI proved that the first official merge commit introducing kb-interop.v1-rc1 reproduces every release inventory file with the exact recorded SHA-256.",
+      "proof": "W4 RC1 provenance probe"
+    }
+  ]
+}

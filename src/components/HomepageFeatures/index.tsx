@@ -85,7 +85,7 @@ function TileCard({ tile }: { tile: Tile }) {
 
 // npm install typescript @types/react @types/react-dom --save-dev
 
-export default function HomepageFeatures(): JSX.Element {
+export default function HomepageFeatures(): React.JSX.Element {
   return (
     <section style={{ padding: "64px 0" }}>
       <Container size="lg">
