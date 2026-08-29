@@ -6,44 +6,49 @@ repository:
   github: matuteiglesias/kb-contracts
 domain: knowledge
 system: kb.contracts
-role: contract-registry
+role: shared-interoperability-contract-authority
 lifecycle: active
 authority:
-  status: proposed
+  status: current
   owns:
-  - shared knowledge artifact schemas and compatibility rules
-  - offline validation semantics for shared contracts
+  - shared knowledge artifact identity, integrity and provenance schemas
+  - module descriptors, interoperability profiles and compatibility rules
+  - offline validation semantics for registered shared contracts
+  - immutable machine-readable contract releases
   does_not_own:
-  - producer orchestration
-  - retries, staging, rollback, or producer-local lifecycle
-  - domain-specific execution semantics
+  - producer-owned domain schemas merely because multiple repositories exchange them
+  - universal execution architecture or orchestration
+  - producer run records, bundles, lifecycle statuses, retries, staging or rollback
+  - evidence-selection policy, context routing, review snapshots or paper-domain semantics
 interfaces:
   consumes: []
   produces:
-  - contract:kb.chunk-set@1
-  - contract:kb.review-node@1
-  - contract:kb.run-manifest@1
-  - contract:kb.selected-evidence@1
+  - contract:kb.module@1.0
+  - contract:kb.knowledge-artifact-manifest@1.0
+  - contract:kb.knowledge-profile-claim@1.0
+  - profile:knowledge-interop@1
+  - release:kb-interop.v1-rc1
 upstream: []
-downstream:
-- repo.context
-- repo.gpt-digests
-- repo.knowledge-base-app
-- repo.knowledge-inspect
-- repo.matias-context-mcp
+downstream: []
+notes:
+- Consumers declare adoption explicitly; this registry does not infer runtime dependency edges from conceptual compatibility.
+- Producer-owned schemas remain in producer repositories until repeated interoperability need justifies shared registration.
 canonical_commands:
-- make check
-- make docs
-- make run
+- npm ci
+- npm run contract:validate
+- npm run build
+- npm run start
 generated_paths:
-- dist/
-- schemas/
+- build/
 verification:
-  status: partial
-  last_verified: '2026-08-04'
-  command: make check
+  status: release-candidate
+  last_verified: '2026-08-29'
+  command: npm run contract:validate
+  evidence:
+  - contracts/registry.json is the machine-readable authority for currently registered schemas and profiles
+  - README.md documents kb-interop.v1-rc1 and the producer-owned schema adoption boundary
   unknowns:
-  - Make targets and native npm commands require execution from a local checkout with dependencies installed
+  - producer-owned schema reference protocol remains a documented next-RC adoption gap
 maintenance:
   cadence: quarterly
   next_review: '2026-11-01'
