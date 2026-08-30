@@ -3,6 +3,9 @@ import {themes as prismThemes} from 'prism-react-renderer';
 import type {Config} from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
 
+const Description =
+  'Reference architecture for machine-readable knowledge contracts: artifact schemas, interoperability, provenance, compatibility, validation, and reliable knowledge pipelines.';
+
 const config: Config = {
   title: 'KB Contracts',
   tagline: 'Machine-readable contracts for knowledge artifact interoperability',
@@ -50,6 +53,17 @@ const config: Config = {
 
   themeConfig: {
     image: 'img/docusaurus-social-card.jpg',
+    metadata: [
+      {name: 'description', content: Description},
+      {
+        name: 'keywords',
+        content:
+          'knowledge contracts, knowledge pipelines, data contracts, artifact schemas, interoperability, provenance, compatibility, validation, knowledge architecture',
+      },
+      {name: 'robots', content: 'index,follow'},
+      {property: 'og:description', content: Description},
+      {property: 'og:site_name', content: 'KB Contracts'},
+    ],
     colorMode: {
       respectPrefersColorScheme: true,
     },
