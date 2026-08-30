@@ -1,6 +1,8 @@
 ---
-title: Start here
+title: Knowledge contracts for reliable pipelines
+sidebar_label: Start here
 sidebar_position: 0
+description: Start here for machine-readable knowledge artifact contracts covering schemas, manifests, interoperability, compatibility, provenance, and validation.
 ---
 
 # Start with the contract you can validate
